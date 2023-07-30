@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1010003932936",
+    "project_id": "sales-app-sneaker",
+    "storage_bucket": "sales-app-sneaker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1010003932936:android:fc944ee6cae07fe3279ebd",
+        "android_client_info": {
+          "package_name": "com.example.sneaker_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1010003932936-97mcutukkmkp18vf00re68tsp4tq6vah.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCome2H2VZasTjYxD3pb5n09xp8ftn3sec"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1010003932936-97mcutukkmkp18vf00re68tsp4tq6vah.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

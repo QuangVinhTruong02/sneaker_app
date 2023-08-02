@@ -60,9 +60,10 @@ class _ItemOfCartState extends State<ItemOfCart> {
           ],
         ),
         child: GestureDetector(
-          onTap: () {
-            ProductData? product =
-                FirestoreService().getProduct(widget.item.idProduct);
+          onTap: () async {
+            ProductData? product;
+            product =
+                await FirestoreService().getProduct(widget.item.idProduct);
             Navigator.push(
               context,
               MaterialPageRoute(

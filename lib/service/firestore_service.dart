@@ -19,9 +19,9 @@ class FirestoreService {
     return topList;
   }
 
-  ProductData? getProduct(String idProduct) {
-  ProductData? product;
-    _products.doc(idProduct).get().then((value) {
+  Future<ProductData?> getProduct(String idProduct) async{
+    ProductData? product;
+    await _products.doc(idProduct).get().then((value) {
       product = ProductData.fromJson(value.data()!);
     });
     return product;

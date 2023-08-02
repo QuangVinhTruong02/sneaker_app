@@ -9,10 +9,10 @@ import 'package:sneaker_app/ui/widget/product_detail_page/select_size_widget.dar
 import 'package:sneaker_app/ui/widget/text_style.dart';
 
 class ProductDetailPage extends StatefulWidget {
-  final ProductData? product;
+   ProductData? product;
   final String idProduct;
-  const ProductDetailPage(
-      {super.key, required this.product, required this.idProduct});
+   ProductDetailPage(
+      {super.key, this.product, required this.idProduct});
 
   @override
   State<ProductDetailPage> createState() => _ProductDetailPageState();

@@ -5,15 +5,13 @@ import 'package:sneaker_app/controller/product_notifier.dart';
 import 'package:sneaker_app/ui/widget/text_style.dart';
 
 class SelectSizeWidget extends StatefulWidget {
+  final List<int> list;
+  final int? size;
   SelectSizeWidget({
     super.key,
-    this.list,
-    // required this.value,
+    required this.list,
+    this.size,
   });
-
-  //int value;
-
-  List<int>? list;
 
   @override
   State<SelectSizeWidget> createState() => _SelectSizeWidgetState();
@@ -24,7 +22,10 @@ class _SelectSizeWidgetState extends State<SelectSizeWidget> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<ProductNotifier>(context, listen: false).sizeList =
-          widget.list!;
+          widget.list;
+          if (widget.size != null) {
+        Provider.of<ProductNotifier>(context, listen: false).checkSize = widget.size!;
+      }
     });
     super.initState();
   }
@@ -35,6 +36,7 @@ class _SelectSizeWidgetState extends State<SelectSizeWidget> {
       height: 40,
       child: Consumer<ProductNotifier>(
         builder: (context, productNotifier, child) {
+          
           return ListView.builder(
             shrinkWrap: true,
             physics: BouncingScrollPhysics(),

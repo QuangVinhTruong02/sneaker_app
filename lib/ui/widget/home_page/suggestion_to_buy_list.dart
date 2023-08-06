@@ -74,8 +74,8 @@ class SuggestionToBuyList extends StatelessWidget {
                         style: textStyleApp(FontWeight.w700, Colors.black, 18),
                       ),
                       Text(
-                        '${products[index].price}.000₫',
-                        style: textStyleApp(FontWeight.w400, Colors.black, 15),
+                        '${formaCurrencyText(products[index].price)}',
+                        style: textStyleApp(FontWeight.w400, Colors.black, 16),
                       ),
                     ],
                   ),

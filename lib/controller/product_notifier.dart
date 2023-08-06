@@ -7,6 +7,7 @@ class ProductNotifier extends ChangeNotifier {
   int get quantity => _quantity;
   set quantity(int newQuantity) {
     _quantity = newQuantity;
+    
   }
 
   void increment() {
@@ -34,4 +35,14 @@ class ProductNotifier extends ChangeNotifier {
   int get index => _index;
 
   int get value => _sizeList[_index];
+
+  set checkSize(int value) {
+    for (int i = 0; i < sizeList.length; i++) {
+      if (sizeList[i] == value) {
+        _index = i;
+        notifyListeners();
+        return;
+      }
+    }
+  }
 }

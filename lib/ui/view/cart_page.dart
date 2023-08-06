@@ -7,7 +7,7 @@ import 'package:sneaker_app/service/firestore_service.dart';
 import 'package:sneaker_app/ui/widget/text_style.dart';
 
 import '../widget/cart_page/item_of_cart.dart';
-import '../widget/cart_page/pay_cart.dart';
+import '../widget/cart_page/pay_cart_bar.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -47,6 +47,7 @@ class _CartPageState extends State<CartPage> {
                 ),
               ),
               Expanded(
+                //get all item of cart
                 child: StreamBuilder(
                   stream: FirebaseFirestore.instance
                       .collection("users")
@@ -71,6 +72,12 @@ class _CartPageState extends State<CartPage> {
                                 itemBuilder: (context, index) {
                                   String id = snapshot.data!.docs[index].id;
                                   Ids.add(id);
+                                  //set all checked
+                                  final alow = cartList!
+                                      .every((element) => element.isSelected);
+                                  Provider.of<CartNotifier>(context,
+                                          listen: false)
+                                      .isAllChecked = alow;
                                   // CartData item = ;
                                   return ItemOfCart(
                                     item: cartList![index],
@@ -80,7 +87,7 @@ class _CartPageState extends State<CartPage> {
                               ),
                             ),
                             Container(
-                              height: MediaQuery.of(context).size.height * 0.12,
+                              height: MediaQuery.of(context).size.height * 0.1,
                               padding: const EdgeInsets.all(8),
                               //width: MediaQuery.of(context).size.width,
                               decoration: BoxDecoration(
@@ -93,7 +100,7 @@ class _CartPageState extends State<CartPage> {
                                   )
                                 ],
                               ),
-                              child: PayCart(Ids: Ids, cartList: cartList),
+                              child: PayCartBar(Ids: Ids, cartList: cartList),
                             ),
                           ],
                         );

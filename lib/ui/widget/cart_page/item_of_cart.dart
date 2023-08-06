@@ -50,7 +50,7 @@ class _ItemOfCartState extends State<ItemOfCart> {
                   Provider.of<CartNotifier>(context, listen: false)
                       .total(amount, false);
                 }
-                FirestoreService().deleteItem(widget.id);
+                FirestoreService().deleteItemOfCart(widget.id);
               },
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
@@ -64,12 +64,15 @@ class _ItemOfCartState extends State<ItemOfCart> {
             ProductData? product;
             product =
                 await FirestoreService().getProduct(widget.item.idProduct);
+            if (!mounted) return;
             Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => ProductDetailPage(
-                  product: product,
-                  idProduct: widget.id,
+                  product: product!,
+                  idProduct: widget.item.idProduct,
+                  quantity: widget.item.quantity,
+                  size: widget.item.size,
                 ),
               ),
             );
@@ -95,10 +98,14 @@ class _ItemOfCartState extends State<ItemOfCart> {
                 Checkbox(
                   value: widget.item.isSelected,
                   onChanged: (checked) {
+                    final provider =
+                        Provider.of<CartNotifier>(context, listen: false);
+                    
+                    // provider.checkedList = widget.item.isSelected;
                     FirestoreService()
                         .updateCheckedItemOfCart(widget.id, checked!);
-                    Provider.of<CartNotifier>(context, listen: false)
-                        .total(amount, checked);
+
+                    provider.total(amount, checked);
                   },
                 ),
                 CachedNetworkImage(
@@ -142,7 +149,7 @@ class _ItemOfCartState extends State<ItemOfCart> {
                         ),
                       ),
                       Text(
-                        'Giá: ${widget.item.price}.000₫',
+                        'Giá: ${formaCurrencyText(widget.item.price)}',
                         style: textStyleApp(
                           FontWeight.w500,
                           Colors.black,

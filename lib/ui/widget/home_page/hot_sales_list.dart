@@ -91,7 +91,7 @@ class HotSalesList extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  '${list[index].price}.000₫',
+                                  '${formaCurrencyText(list[index].price)}',
                                   style: textStyleApp(
                                       FontWeight.w600, Colors.black, 24),
                                 ),

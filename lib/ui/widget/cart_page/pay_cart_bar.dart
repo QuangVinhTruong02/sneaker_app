@@ -6,8 +6,8 @@ import '../../../models/cart_data.dart';
 import '../../../service/firestore_service.dart';
 import '../text_style.dart';
 
-class PayCart extends StatelessWidget {
-  const PayCart({
+class PayCartBar extends StatefulWidget {
+  const PayCartBar({
     super.key,
     required this.Ids,
     required this.cartList,
@@ -15,6 +15,19 @@ class PayCart extends StatelessWidget {
 
   final List<String> Ids;
   final List<CartData>? cartList;
+
+  @override
+  State<PayCartBar> createState() => _PayCartBarState();
+}
+
+class _PayCartBarState extends State<PayCartBar> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<CartNotifier>(context, listen: false).setTotal = 0;
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +39,12 @@ class PayCart extends StatelessWidget {
               value: cartNotifier.isAllChecked,
               onChanged: (checked) {
                 cartNotifier.isAllChecked = checked!;
-                for (var element in Ids) {
+
+                // print(alow);
+                for (var element in widget.Ids) {
                   FirestoreService().updateCheckedItemOfCart(element, checked);
                 }
-                for (var element in cartList!) {
+                for (var element in widget.cartList!) {
                   int amount = element.price * element.quantity;
                   cartNotifier.total(amount, checked);
                 }
@@ -43,7 +58,7 @@ class PayCart extends StatelessWidget {
                 18,
               ),
             ),
-            const SizedBox(width: 30),
+            const SizedBox(width: 20),
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -61,7 +76,7 @@ class PayCart extends StatelessWidget {
                     fit: BoxFit.scaleDown,
                     alignment: Alignment.center,
                     child: Text(
-                      "${cartNotifier.getTotal}.000₫",
+                      "${formaCurrencyText(cartNotifier.getTotal)}",
                       textScaleFactor: 1,
                       style: textStyleApp(
                         FontWeight.normal,
@@ -76,7 +91,7 @@ class PayCart extends StatelessWidget {
             const SizedBox(width: 28),
             Container(
               height: MediaQuery.of(context).size.height * 0.9,
-              width: MediaQuery.of(context).size.width * 0.3,
+              width: MediaQuery.of(context).size.width * 0.27,
               decoration: const BoxDecoration(
                 color: Colors.blue,
                 borderRadius: BorderRadius.all(

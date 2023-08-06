@@ -5,7 +5,7 @@ class ProductData {
   final String image;
   final int price;
   final String brand;
-  List<dynamic>? sizez;
+  List<dynamic> sizez;
 
   ProductData({
     required this.name,
@@ -31,7 +31,7 @@ class ProductData {
       'image': image,
       'price': price,
       'brand': brand,
-      'size': List<dynamic>.from(sizez!.map((x) => x.toJson())),
+      'size': List<dynamic>.from(sizez.map((x) => x.toJson())),
       'createdAt': FieldValue.serverTimestamp(),
     };
   }

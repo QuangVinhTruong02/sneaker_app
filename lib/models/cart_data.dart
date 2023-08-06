@@ -1,8 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import 'product_data.dart';
-
-class CartData extends ProductData{
+class CartData {
   final String idProduct;
   final String name;
   final String image;
@@ -21,8 +18,7 @@ class CartData extends ProductData{
     required this.size,
     required this.quantity,
     required this.isSelected,
-     List<dynamic>? sizez,
-  }): super(name: name, brand: brand, image: image, price: price, sizez: sizez);
+  });
 
   factory CartData.fromJson(Map<String, dynamic> json) {
     return CartData(

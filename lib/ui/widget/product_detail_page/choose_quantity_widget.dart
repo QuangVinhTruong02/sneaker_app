@@ -5,26 +5,40 @@ import 'package:sneaker_app/controller/product_notifier.dart';
 
 import 'package:sneaker_app/ui/widget/text_style.dart';
 
-class ChooseQuantityWidget extends StatelessWidget {
-  
+class ChooseQuantityWidget extends StatefulWidget {
+  final int? quantity;
   ChooseQuantityWidget({
-    
     super.key,
+    this.quantity,
   });
+
+  @override
+  State<ChooseQuantityWidget> createState() => _ChooseQuantityWidgetState();
+}
+
+class _ChooseQuantityWidgetState extends State<ChooseQuantityWidget> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.quantity != null) {
+        Provider.of<ProductNotifier>(context, listen: false).quantity =
+            widget.quantity!;
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          
       children: [
         Text(
-           'Chọn số lượng: ' ,
+          'Chọn số lượng: ',
           style: textStyleApp(FontWeight.normal, Colors.black, 18),
         ),
         Consumer<ProductNotifier>(
           builder: (context, productNotifier, child) {
-           
             return Row(
               children: [
                 Container(
@@ -80,7 +94,6 @@ class ChooseQuantityWidget extends StatelessWidget {
                   child: GestureDetector(
                     onTap: () {
                       productNotifier.increment();
-                      
                     },
                     child: const Icon(
                       MaterialCommunityIcons.plus,

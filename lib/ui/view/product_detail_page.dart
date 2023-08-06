@@ -9,10 +9,17 @@ import 'package:sneaker_app/ui/widget/product_detail_page/select_size_widget.dar
 import 'package:sneaker_app/ui/widget/text_style.dart';
 
 class ProductDetailPage extends StatefulWidget {
-   ProductData? product;
+  final ProductData product;
   final String idProduct;
-   ProductDetailPage(
-      {super.key, this.product, required this.idProduct});
+  final int? quantity;
+  final int? size;
+  ProductDetailPage({
+    super.key,
+    required this.product,
+    required this.idProduct,
+    this.quantity,
+    this.size,
+  });
 
   @override
   State<ProductDetailPage> createState() => _ProductDetailPageState();
@@ -35,6 +42,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 Navigator.pop(context);
                 provider.index = 0;
                 provider.quantity = 1;
+                provider.sizeList.clear();
               },
               icon: const Icon(Icons.arrow_back),
               color: Colors.black,
@@ -53,7 +61,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       image: DecorationImage(
-                        image: NetworkImage(widget.product!.image),
+                        image: NetworkImage(widget.product.image),
                       ),
                     ),
                   ),
@@ -76,14 +84,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               ),
                               const SizedBox(height: 15),
                               Text(
-                                widget.product!.name,
+                                widget.product.name,
                                 maxLines: 2,
-                                style: textStyleAppHeight(
-                                    FontWeight.bold, Colors.black, 25, 1),
+                                style: textStyleApp(
+                                    FontWeight.bold, Colors.black, 25),
                               ),
                               const SizedBox(height: 10),
                               Text(
-                                'Giá: ${widget.product!.price}.000₫',
+                                'Giá: ${widget.product.price}.000₫',
                                 style: textStyleApp(
                                     FontWeight.w600, Colors.black, 20),
                               ),
@@ -103,40 +111,38 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               const SizedBox(height: 5),
                               //select size
                               SelectSizeWidget(
-                                  list: widget.product!.sizez!.cast<int>()),
+                                list: widget.product.sizez.cast<int>(),
+                                size: widget.size,
+                              ),
                               Divider(
                                 color: Colors.grey,
                                 thickness: 1,
                               ),
                               const SizedBox(height: 5),
                               //choose quantity
-                              ChooseQuantityWidget(),
+                              ChooseQuantityWidget(quantity: widget.quantity),
                               SizedBox(height: 15),
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 8),
                                 child: GestureDetector(
                                   onTap: () {
-                                    //  print('${FirestoreService.idUser}');
+                                   
                                     CartData cart = CartData(
                                       idProduct: widget.idProduct,
-                                      name: widget.product!.name,
-                                      image: widget.product!.image,
-                                      price: widget.product!.price,
-                                      brand: widget.product!.brand,
+                                      name: widget.product.name,
+                                      image: widget.product.image,
+                                      price: widget.product.price,
+                                      brand: widget.product.brand,
                                       size: provider.value,
                                       quantity: provider.quantity,
                                       isSelected: false,
                                     );
-                                    int value = Provider.of<ProductNotifier>(
-                                            context,
-                                            listen: false)
-                                        .value;
-                                    print(value);
                                     FirestoreService().addCart(
                                         cart, widget.idProduct, context);
                                     Navigator.pop(context);
                                     provider.index = 0;
                                     provider.quantity = 1;
+                                    provider.sizeList.clear();
                                   },
                                   child: Container(
                                     height: 50,

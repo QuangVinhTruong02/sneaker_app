@@ -19,8 +19,8 @@ class FirestoreService {
     return topList;
   }
 
-  Future<ProductData?> getProduct(String idProduct) async{
-    ProductData? product;
+  Future<ProductData> getProduct(String idProduct) async {
+    late ProductData product;
     await _products.doc(idProduct).get().then((value) {
       product = ProductData.fromJson(value.data()!);
     });
@@ -50,7 +50,6 @@ class FirestoreService {
               .doc(idCart.id)
               .update(cart.toJson());
         }
-        print("ok");
       });
     } catch (e) {
       _users.doc(idUser).collection("cart").add(cart.toJson());
@@ -96,7 +95,7 @@ class FirestoreService {
         .update({"quantity": value});
   }
 
-  void deleteItem(String idItem) async {
+  void deleteItemOfCart(String idItem) async {
     await _users.doc(idUser).collection("cart").doc(idItem).delete();
   }
 }

@@ -6,7 +6,7 @@ class ValidFormWidget extends StatefulWidget {
   final TextEditingController controller;
   final String nameText;
   final Sink sink;
-  ValidFormWidget({
+  const ValidFormWidget({
     super.key,
     required this.stream,
     required this.controller,
@@ -41,13 +41,13 @@ class _ValidFormWidgetState extends State<ValidFormWidget> {
               fillColor: Colors.grey[200],
               focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(color: Colors.black)),
+                  borderSide: const BorderSide(color: Colors.black)),
               enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(color: Colors.black)),
+                  borderSide: const BorderSide(color: Colors.black)),
               errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(color: Colors.black)),
+                  borderSide: const BorderSide(color: Colors.black)),
               hintText: widget.nameText,
               focusColor: Colors.black,
               errorText: snapshot.hasError ? snapshot.error.toString() : null,
@@ -60,8 +60,8 @@ class _ValidFormWidgetState extends State<ValidFormWidget> {
                         });
                       },
                       icon: !_visibility
-                          ? Icon(Icons.visibility)
-                          : Icon(Icons.visibility_off),
+                          ? const Icon(Icons.visibility)
+                          : const Icon(Icons.visibility_off),
                     )
                   : null),
           onChanged: (value) => widget.sink.add(value),

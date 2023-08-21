@@ -14,10 +14,10 @@ class AuthService {
     )
         .then((value) { 
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Đăng nhập thành công')));
+          .showSnackBar(const SnackBar(content: Text('Đăng nhập thành công')));
     }).onError((error, stackTrace) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Sai emai hoặc mật khẩu')));
+          .showSnackBar(const SnackBar(content: Text('Sai emai hoặc mật khẩu')));
     });
   }
 
@@ -39,7 +39,7 @@ class AuthService {
       showDialog(
         context: context,
         builder: (context) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         },
@@ -63,7 +63,7 @@ class AuthService {
       //   'updateAt': FieldValue.serverTimestamp(),
       // }
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Đăng ký thành công'),
         ),
       );
@@ -72,7 +72,7 @@ class AuthService {
       Navigator.pop(context);
     }).onError((error, stackTrace) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Tài khoản đã có người đăng ký'),
         ),
       );
@@ -82,7 +82,7 @@ class AuthService {
   Future ForgotPassword(String email, BuildContext context) async {
     await _firebaseAuth.sendPasswordResetEmail(email: email).then((_) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text(
               'Mã đã được gửi về địa chỉ email của bạn! Vui lòng vào gmail để đổi mật khẩu'),
         ),

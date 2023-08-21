@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sneaker_app/controller/cart_notifier.dart';
 import 'package:sneaker_app/models/cart_data.dart';
-import 'package:sneaker_app/service/firestore_service.dart';
+import 'package:sneaker_app/service/firestore_service/firestore_user.dart';
 import 'package:sneaker_app/ui/widget/text_style.dart';
 
 import '../widget/cart_page/item_of_cart.dart';
@@ -51,15 +51,15 @@ class _CartPageState extends State<CartPage> {
                 child: StreamBuilder(
                   stream: FirebaseFirestore.instance
                       .collection("users")
-                      .doc(FirestoreService.idUser)
+                      .doc(FirestoreUser.idUser)
                       .collection("cart")
                       .orderBy("createdAt", descending: true)
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.active) {
                       cartList =
-                          FirestoreService().getCarts(snapshot.data?.docs);
-                      if (cartList!.length == 0) {
+                          FirestoreUser().getCarts(snapshot.data?.docs);
+                      if (cartList!.isEmpty) {
                         return Center(
                           child: Image.asset('assets/images/empty-cart.png'),
                         );

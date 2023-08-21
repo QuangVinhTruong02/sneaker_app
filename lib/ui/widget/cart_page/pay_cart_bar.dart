@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../controller/cart_notifier.dart';
 import '../../../models/cart_data.dart';
-import '../../../service/firestore_service.dart';
+import '../../../service/firestore_service/firestore_user.dart';
 import '../text_style.dart';
 
 class PayCartBar extends StatefulWidget {
@@ -33,6 +33,9 @@ class _PayCartBarState extends State<PayCartBar> {
   Widget build(BuildContext context) {
     return Consumer<CartNotifier>(
       builder: (context, cartNotifier, child) {
+        if (widget.cartList!.every((element) => element.isSelected == false)) {
+          cartNotifier.setTotal = 0;
+        }
         return Row(
           children: [
             Checkbox(
@@ -42,12 +45,13 @@ class _PayCartBarState extends State<PayCartBar> {
 
                 // print(alow);
                 for (var element in widget.Ids) {
-                  FirestoreService().updateCheckedItemOfCart(element, checked);
+                  FirestoreUser().updateCheckedItemOfCart(element, checked);
                 }
                 for (var element in widget.cartList!) {
                   int amount = element.price * element.quantity;
                   cartNotifier.total(amount, checked);
                 }
+                
               },
             ),
             Text(
@@ -76,7 +80,7 @@ class _PayCartBarState extends State<PayCartBar> {
                     fit: BoxFit.scaleDown,
                     alignment: Alignment.center,
                     child: Text(
-                      "${formaCurrencyText(cartNotifier.getTotal)}",
+                      formaCurrencyText(cartNotifier.getTotal),
                       textScaleFactor: 1,
                       style: textStyleApp(
                         FontWeight.normal,

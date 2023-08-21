@@ -4,35 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:sneaker_app/models/cart_data.dart';
 import 'package:sneaker_app/models/product_data.dart';
 
-class FirestoreService {
-  final _products = FirebaseFirestore.instance.collection('products');
+class FirestoreUser {
+
   final _users = FirebaseFirestore.instance.collection('users');
   static late String idUser;
-  //get item
-  List<ProductData>? getProducts(
-      List<QueryDocumentSnapshot<Map<String, dynamic>>>? docs) {
-    List<ProductData>? topList;
-    topList = docs
-        ?.map(
-            (documentSnapshot) => ProductData.fromJson(documentSnapshot.data()))
-        .toList();
-    return topList;
-  }
+  //get item list
 
-  Future<ProductData> getProduct(String idProduct) async {
-    late ProductData product;
-    await _products.doc(idProduct).get().then((value) {
-      product = ProductData.fromJson(value.data()!);
-    });
-    return product;
-  }
+
+  //get item
+ 
 
   Future<void> addCart(
       CartData cart, String idProduct, BuildContext context) async {
     showDialog(
       context: context,
       builder: (context) {
-        return Center(
+        return const Center(
           child: CircularProgressIndicator(),
         );
       },

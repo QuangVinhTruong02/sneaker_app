@@ -54,7 +54,7 @@ class BottomNavigation extends StatelessWidget {
                   onTap: () {
                     mainScreenNotifier.position = 3;
                   },
-                  icon: Icons.account_circle,
+                  icon: Icons.person,
                   color: mainScreenNotifier.position == 3
                       ? Colors.white
                       : Colors.grey,

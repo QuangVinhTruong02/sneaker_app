@@ -27,7 +27,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -38,7 +38,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: Icon(Icons.arrow_back),
+                      icon: const Icon(Icons.arrow_back),
                     ),
                   ],
                 ),
@@ -63,12 +63,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   'Quên mật khẩu',
                   style: textStyleApp(FontWeight.bold, Colors.black, 42),
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 Text(
                   'Vui lòng nhập địa chỉ email để lấy lại mật khẩu: ',
                   style: textStyleApp(FontWeight.w500, Colors.black, 16),
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 TextField(
                   controller: _emailController,
                   cursorColor: Colors.black,
@@ -77,10 +77,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     fillColor: Colors.grey[200],
                     focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide(color: Colors.black)),
+                        borderSide: const BorderSide(color: Colors.black)),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide(color: Colors.black)),
+                        borderSide: const BorderSide(color: Colors.black)),
                     hintText: "Vui lòng nhập địa chỉ email",
                     focusColor: Colors.black,
                   ),
@@ -88,7 +88,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     FocusManager.instance.primaryFocus?.unfocus();
                   },
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 ElevatedButton(
                   style: ButtonStyle(
                     padding: MaterialStateProperty.all(

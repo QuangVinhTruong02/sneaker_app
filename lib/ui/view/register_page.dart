@@ -51,7 +51,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade300,
+      backgroundColor: Colors.grey.shade200,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -72,7 +72,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
 
               //email
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               ValidFormWidget(
                 stream: validation.email,
                 controller: _emailController,
@@ -81,7 +81,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
 
               //name
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Row(
                 children: [
                   //first name
@@ -94,7 +94,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       sink: validation.sinkFirstName,
                     ),
                   ),
-                  SizedBox(width: 15),
+                  const SizedBox(width: 15),
                   //last name
                   Flexible(
                     flex: 1,
@@ -109,7 +109,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
 
               //phone
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               ValidFormWidget(
                 stream: validation.phone,
                 controller: _phoneController,
@@ -117,7 +117,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 sink: validation.sinkPhone,
               ),
               //address
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               ValidFormWidget(
                 stream: validation.address,
                 controller: _addressController,
@@ -126,7 +126,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
 
               //password
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               ValidFormWidget(
                 stream: validation.password,
                 controller: _passwordController,
@@ -135,7 +135,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
 
               //confirm password
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               ValidFormWidget(
                 stream: validation.confirmPassword,
                 controller: _confirmPasswrodController,
@@ -143,7 +143,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 sink: validation.sinkConfirmPassword,
               ),
 
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
 
               //Already have an account
 
@@ -162,7 +162,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ),
 
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
 
               //button signIn
               SizedBox(
@@ -172,7 +172,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   builder: (context, snapshot) {
                     return ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 10),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16)),
                         backgroundColor: snapshot.hasData == true && checkForm()

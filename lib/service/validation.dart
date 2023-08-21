@@ -44,6 +44,9 @@ class Validation {
       (email, firstName, lastName, phone, address, password, confirmPassword) =>
           true);
 
+  Stream<bool> get submitEditProfile => Rx.combineLatest4(
+      firstName, lastName, phone, address, (a, b, c, d) => true);
+
   //xác thực email
   final validateEmail = StreamTransformer<String, String>.fromHandlers(
     handleData: (data, sink) {
@@ -58,7 +61,7 @@ class Validation {
   //xác thực tên
   final validateName = StreamTransformer<String, String>.fromHandlers(
     handleData: (data, sink) {
-      if (data.length >= 1) {
+      if (data.isNotEmpty) {
         isName(data) ? sink.add(data) : sink.addError('Vui lòng điền tên vào!');
       }
     },
@@ -67,7 +70,7 @@ class Validation {
   //xác thực SĐT
   final validatePhone = StreamTransformer<String, String>.fromHandlers(
     handleData: (data, sink) {
-      if (data.length >= 0) {
+      if (data.isNotEmpty) {
         data.length == 10
             ? sink.add(data)
             : sink.addError('Vui lòng điền số điện thoại!');
@@ -78,9 +81,11 @@ class Validation {
   //xác thực địa chỉ
   final validateAddress = StreamTransformer<String, String>.fromHandlers(
     handleData: (data, sink) {
-      data.length >= 10
-          ? sink.add(data)
-          : sink.addError('Vui lòng điền địa chỉ');
+      if (data.isNotEmpty) {
+        data.length >= 10
+            ? sink.add(data)
+            : sink.addError('Vui lòng điền địa chỉ!');
+      }
     },
   );
 

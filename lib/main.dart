@@ -5,7 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:sneaker_app/controller/cart_notifier.dart';
 import 'package:sneaker_app/controller/product_notifier.dart';
 import 'package:sneaker_app/service/auth_service.dart';
-import 'package:sneaker_app/service/firestore_service.dart';
+import 'package:sneaker_app/service/firestore_service/firestore_product.dart';
+import 'package:sneaker_app/service/firestore_service/firestore_user.dart';
 import 'package:sneaker_app/controller/main_screen_notifier.dart';
 
 import 'auth/auth_page.dart';
@@ -41,7 +42,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider<AuthService>(create: (_) => AuthService()),
-        Provider<FirestoreService>(create: (context) => FirestoreService()),
+        Provider<FirestoreProduct>(create: (context) => FirestoreProduct()),
+        Provider<FirestoreUser>(create: (context) => FirestoreUser()),
         ChangeNotifierProvider<MainScreenNotifier>(
           create: (_) => MainScreenNotifier(),
         ),
@@ -52,7 +54,7 @@ class MyApp extends StatelessWidget {
           create: (context) => CartNotifier(),
         )
       ],
-      child: MaterialApp(
+      child: const MaterialApp(
         debugShowCheckedModeBanner: false,
         home: AuthPage(),
       ),

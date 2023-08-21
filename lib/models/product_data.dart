@@ -5,14 +5,14 @@ class ProductData {
   final String image;
   final int price;
   final String brand;
-  List<dynamic> sizez;
+  List<dynamic> sizes;
 
   ProductData({
     required this.name,
     required this.image,
     required this.price,
     required this.brand,
-    required this.sizez,
+    required this.sizes,
   });
 
   factory ProductData.fromJson(Map<String, dynamic> json) {
@@ -21,7 +21,7 @@ class ProductData {
       image: json['image'],
       price: int.parse(json['price'].toString()),
       brand: json['brand'],
-      sizez: List<dynamic>.from(json['size'].map((x) => x)).cast<int>(),
+      sizes: List<dynamic>.from(json['size'].map((x) => x)).cast<int>(),
     );
   }
 
@@ -31,7 +31,7 @@ class ProductData {
       'image': image,
       'price': price,
       'brand': brand,
-      'size': List<dynamic>.from(sizez.map((x) => x.toJson())),
+      'size': List<dynamic>.from(sizes.map((x) => x.toJson())),
       'createdAt': FieldValue.serverTimestamp(),
     };
   }

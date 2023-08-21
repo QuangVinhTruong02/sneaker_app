@@ -14,8 +14,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   void dispose() {
@@ -83,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
 
               //forgot password
 
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: GestureDetector(
                   onTap: () {
@@ -115,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
 
               const SizedBox(height: 15),
               //button signUp
-              ButtonSignIn(),
+              const ButtonSignIn(),
             ],
           ),
         ),

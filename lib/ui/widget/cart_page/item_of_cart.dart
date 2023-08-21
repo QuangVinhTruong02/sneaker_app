@@ -4,7 +4,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:sneaker_app/controller/cart_notifier.dart';
 import 'package:sneaker_app/models/product_data.dart';
-import 'package:sneaker_app/service/firestore_service.dart';
+import 'package:sneaker_app/service/firestore_service/firestore_product.dart';
+import 'package:sneaker_app/service/firestore_service/firestore_user.dart';
 import 'package:sneaker_app/ui/view/product_detail_page.dart';
 
 import '../../../models/cart_data.dart';
@@ -28,7 +29,7 @@ class _ItemOfCartState extends State<ItemOfCart> {
   @override
   void initState() {
     if (widget.item.isSelected == true) {
-      FirestoreService().updateCheckedItemOfCart(widget.id, false);
+      FirestoreUser().updateCheckedItemOfCart(widget.id, false);
     }
     super.initState();
   }
@@ -40,17 +41,17 @@ class _ItemOfCartState extends State<ItemOfCart> {
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
       child: Slidable(
         endActionPane: ActionPane(
-          motion: ScrollMotion(),
+          motion: const ScrollMotion(),
           children: [
             SlidableAction(
-              padding: EdgeInsets.all(8),
-              borderRadius: BorderRadius.all(Radius.circular(16)),
+              padding: const EdgeInsets.all(8),
+              borderRadius: const BorderRadius.all(Radius.circular(16)),
               onPressed: (context) {
                 if (widget.item.isSelected == true) {
                   Provider.of<CartNotifier>(context, listen: false)
                       .total(amount, false);
                 }
-                FirestoreService().deleteItemOfCart(widget.id);
+                FirestoreUser().deleteItemOfCart(widget.id);
               },
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
@@ -63,7 +64,7 @@ class _ItemOfCartState extends State<ItemOfCart> {
           onTap: () async {
             ProductData? product;
             product =
-                await FirestoreService().getProduct(widget.item.idProduct);
+                await FirestoreProduct().getProduct(widget.item.idProduct);
             if (!mounted) return;
             Navigator.push(
               context,
@@ -100,9 +101,9 @@ class _ItemOfCartState extends State<ItemOfCart> {
                   onChanged: (checked) {
                     final provider =
                         Provider.of<CartNotifier>(context, listen: false);
-                    
+
                     // provider.checkedList = widget.item.isSelected;
-                    FirestoreService()
+                    FirestoreUser()
                         .updateCheckedItemOfCart(widget.id, checked!);
 
                     provider.total(amount, checked);
@@ -122,7 +123,7 @@ class _ItemOfCartState extends State<ItemOfCart> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${widget.item.name}',
+                        widget.item.name,
                         overflow: TextOverflow.ellipsis,
                         style: textStyleApp(
                           FontWeight.w700,
@@ -148,6 +149,7 @@ class _ItemOfCartState extends State<ItemOfCart> {
                           18,
                         ),
                       ),
+                      const SizedBox(height: 5),
                       Text(
                         'Giá: ${formaCurrencyText(widget.item.price)}',
                         style: textStyleApp(

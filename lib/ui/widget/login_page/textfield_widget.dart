@@ -28,10 +28,10 @@ class _TextfieldWidgetState extends State<TextfieldWidget> {
           fillColor: Colors.grey[200],
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: Colors.black)),
+              borderSide: const BorderSide(color: Colors.black)),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: Colors.black)),
+              borderSide: const BorderSide(color: Colors.black)),
           hintText: widget.nameText,
           focusColor: Colors.black,
           suffixIcon: widget.nameText == 'Password'
@@ -42,8 +42,8 @@ class _TextfieldWidgetState extends State<TextfieldWidget> {
                     });
                   },
                   icon: !_visibility
-                      ? Icon(Icons.visibility)
-                      : Icon(Icons.visibility_off),
+                      ? const Icon(Icons.visibility)
+                      : const Icon(Icons.visibility_off),
                 )
               : null),
       onTap: () {

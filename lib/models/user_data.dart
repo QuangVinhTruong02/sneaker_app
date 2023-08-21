@@ -6,16 +6,12 @@ class UserData {
   final String lastName;
   final String phone;
   final String address;
-   Timestamp? createdAt;
-   Timestamp? updatedAt;
   UserData({
     required this.email,
     required this.firstName,
     required this.lastName,
     required this.phone,
     required this.address,
-    this.createdAt,
-    this.updatedAt,
   }
   );
 
@@ -26,8 +22,6 @@ class UserData {
         lastName: json['lastName'],
         phone: json['phone'],
         address: json['address'],
-        createdAt: json['createdAt'],
-        updatedAt: json['updatedAt'],
         );
   }
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sneaker_app/service/firestore_service.dart';
+import 'package:sneaker_app/service/firestore_service/firestore_product.dart';
 import 'package:sneaker_app/ui/view/product_detail_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -18,32 +18,34 @@ class SuggestionToBuyList extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           List<ProductData>? products =
-              FirestoreService().getProducts(snapshot.data?.docs);
+              FirestoreProduct().getProducts(snapshot.data?.docs);
           return GridView.builder(
             shrinkWrap: true,
-            physics: ScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            physics: const ScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               childAspectRatio: 1.9 / 2,
               crossAxisCount: 2,
             ),
             itemCount: products?.length,
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: () {
+                onTap: () async{
+                   ProductData product;
+                    product = await FirestoreProduct().getProduct(snapshot.data!.docs[index].id);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => ProductDetailPage(
-                        product: products[index],
+                        product: product,
                         idProduct: snapshot.data!.docs[index].id,
                       ),
                     ),
                   );
                 },
                 child: Container(
-                  padding: EdgeInsets.all(5),
-                  margin: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
+                  padding: const EdgeInsets.all(5),
+                  margin: const EdgeInsets.all(8),
+                  decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(
                       Radius.circular(12),
                     ),
@@ -66,7 +68,7 @@ class SuggestionToBuyList extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Text(
                         products[index].name,
                         overflow: TextOverflow.ellipsis,
@@ -74,7 +76,7 @@ class SuggestionToBuyList extends StatelessWidget {
                         style: textStyleApp(FontWeight.w700, Colors.black, 18),
                       ),
                       Text(
-                        '${formaCurrencyText(products[index].price)}',
+                        formaCurrencyText(products[index].price),
                         style: textStyleApp(FontWeight.w400, Colors.black, 16),
                       ),
                     ],
@@ -84,7 +86,7 @@ class SuggestionToBuyList extends StatelessWidget {
             },
           );
         } else {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }

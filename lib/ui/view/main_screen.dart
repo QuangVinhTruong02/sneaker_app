@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sneaker_app/controller/main_screen_notifier.dart';
-import 'package:sneaker_app/service/firestore_service.dart';
-import 'package:sneaker_app/ui/view/check_page.dart';
+import 'package:sneaker_app/service/firestore_service/firestore_user.dart';
+import 'package:sneaker_app/ui/view/profile_page.dart';
 import 'package:sneaker_app/ui/view/home_page.dart';
 import 'package:sneaker_app/ui/view/search_page.dart';
 
@@ -18,15 +18,18 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   List<Widget> pageList = [
-    HomePage(),
-    SearchPage(),
-    CartPage(),
-    CheckPage(),
+    const HomePage(),
+    const SearchPage(),
+    const CartPage(),
+    const ProfilePage(),
   ];
 
   @override
   void initState() {
-    FirestoreService().getCurrentUser();
+    FirestoreUser().getCurrentUser();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<MainScreenNotifier>(context, listen: false).position = 0;
+    });
     super.initState();
   }
 
@@ -37,7 +40,7 @@ class _MainScreenState extends State<MainScreen> {
         return Scaffold(
           // backgroundColor: Colors.black,
           body: pageList[mainScreenNotifier.position],
-          bottomNavigationBar: BottomNavigation(),
+          bottomNavigationBar: const BottomNavigation(),
         );
       },
     );

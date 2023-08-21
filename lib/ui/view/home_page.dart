@@ -51,22 +51,22 @@ class _HomePageState extends State<HomePage> {
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.45,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 0, 20, 0),
+                      child: const Padding(
+                        padding: EdgeInsets.fromLTRB(8, 0, 20, 0),
                         // get top list products
                         child: HotSalesList(),
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 15),
+                      padding: const EdgeInsets.only(left: 15),
                       child: Text(
                         'Buying Suggestions',
                         style: textStyleApp(FontWeight.w500, Colors.black, 18),
                       ),
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     //get all list products
-                    SuggestionToBuyList()
+                    const SuggestionToBuyList()
                   ],
                 ),
               ),

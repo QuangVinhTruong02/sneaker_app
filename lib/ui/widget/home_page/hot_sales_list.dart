@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sneaker_app/service/firestore_service.dart';
+import 'package:sneaker_app/service/firestore_service/firestore_product.dart';
+import 'package:sneaker_app/service/firestore_service/firestore_user.dart';
 import 'package:sneaker_app/ui/view/product_detail_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -12,31 +13,39 @@ class HotSalesList extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: FirebaseFirestore.instance
+    List<ProductData>? list;
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance
           .collection("products")
           .orderBy("price", descending: true)
           .limit(10)
-          .get(),
+          .snapshots(),
+      // FutureBuilder(
+      //   future: FirebaseFirestore.instance
+      //       .collection("products")
+      //       .orderBy("price", descending: true)
+      //       .limit(10)
+      //       .get(),
       builder: (context, snapshot) {
-        List<ProductData>? list =
-            FirestoreService().getProducts(snapshot.data?.docs);
-        if (snapshot.connectionState == ConnectionState.done) {
+        if (snapshot.connectionState == ConnectionState.active) {
+          list = FirestoreProduct().getProducts(snapshot.data?.docs);
           return ListView.builder(
             shrinkWrap: true,
-            physics: ScrollPhysics(),
+            physics: const ScrollPhysics(),
             scrollDirection: Axis.horizontal,
             itemCount: list?.length,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.all(10),
                 child: GestureDetector(
-                  onTap: () {
+                  onTap: () async{
+                    ProductData product;
+                    product = await FirestoreProduct().getProduct(snapshot.data!.docs[index].id);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => ProductDetailPage(
-                          product: list[index],
+                          product: product,
                           idProduct: snapshot.data!.docs[index].id,
                         ),
                       ),
@@ -70,17 +79,17 @@ class HotSalesList extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Padding(
-                            padding: EdgeInsets.only(left: 10),
+                            padding: const EdgeInsets.only(left: 10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
+                                SizedBox(
                                   height:
                                       MediaQuery.of(context).size.height * 0.1,
                                   child: Text(
-                                    list[index].name,
+                                    list![index].name,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2,
                                     style: textStyleApp(
@@ -91,7 +100,7 @@ class HotSalesList extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  '${formaCurrencyText(list[index].price)}',
+                                  formaCurrencyText(list![index].price),
                                   style: textStyleApp(
                                       FontWeight.w600, Colors.black, 24),
                                 ),
@@ -107,7 +116,7 @@ class HotSalesList extends StatelessWidget {
             },
           );
         } else {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }

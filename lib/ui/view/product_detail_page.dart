@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sneaker_app/controller/product_notifier.dart';
 import 'package:sneaker_app/models/cart_data.dart';
 import 'package:sneaker_app/models/product_data.dart';
-import 'package:sneaker_app/service/firestore_service.dart';
+import 'package:sneaker_app/service/firestore_service/firestore_user.dart';
 import 'package:sneaker_app/ui/widget/product_detail_page/choose_quantity_widget.dart';
 import 'package:sneaker_app/ui/widget/product_detail_page/select_size_widget.dart';
 import 'package:sneaker_app/ui/widget/text_style.dart';
@@ -13,7 +13,7 @@ class ProductDetailPage extends StatefulWidget {
   final String idProduct;
   final int? quantity;
   final int? size;
-  ProductDetailPage({
+  const ProductDetailPage({
     super.key,
     required this.product,
     required this.idProduct,
@@ -95,7 +95,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                 style: textStyleApp(
                                     FontWeight.w600, Colors.black, 20),
                               ),
-                              Divider(
+                              const Divider(
                                 color: Colors.grey,
                                 thickness: 1,
                               ),
@@ -111,22 +111,22 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               const SizedBox(height: 5),
                               //select size
                               SelectSizeWidget(
-                                list: widget.product.sizez.cast<int>(),
+                                list: widget.product.sizes as List<int>,
                                 size: widget.size,
                               ),
-                              Divider(
+                              const Divider(
                                 color: Colors.grey,
                                 thickness: 1,
                               ),
                               const SizedBox(height: 5),
                               //choose quantity
                               ChooseQuantityWidget(quantity: widget.quantity),
-                              SizedBox(height: 15),
+                              const SizedBox(height: 15),
                               Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 8),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8),
                                 child: GestureDetector(
                                   onTap: () {
-                                   
                                     CartData cart = CartData(
                                       idProduct: widget.idProduct,
                                       name: widget.product.name,
@@ -137,7 +137,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                       quantity: provider.quantity,
                                       isSelected: false,
                                     );
-                                    FirestoreService().addCart(
+                                    FirestoreUser().addCart(
                                         cart, widget.idProduct, context);
                                     Navigator.pop(context);
                                     provider.index = 0;
@@ -148,7 +148,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                     height: 50,
                                     decoration: BoxDecoration(
                                       color: Colors.blue[400],
-                                      borderRadius: BorderRadius.all(
+                                      borderRadius: const BorderRadius.all(
                                         Radius.circular(16),
                                       ),
                                     ),

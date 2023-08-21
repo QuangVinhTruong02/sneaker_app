@@ -7,7 +7,7 @@ import 'package:sneaker_app/ui/widget/text_style.dart';
 
 class ChooseQuantityWidget extends StatefulWidget {
   final int? quantity;
-  ChooseQuantityWidget({
+  const ChooseQuantityWidget({
     super.key,
     this.quantity,
   });

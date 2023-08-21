@@ -17,13 +17,12 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
-  List<CartData>? cartList;
   List<String> Ids = List.empty(growable: true);
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<CartNotifier>(context, listen: false).amount = 0;
+      // Provider.of<CartNotifier>(context, listen: false).amount = 0;
       Provider.of<CartNotifier>(context, listen: false).isAllChecked = false;
     });
     super.initState();
@@ -57,8 +56,9 @@ class _CartPageState extends State<CartPage> {
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.active) {
-                      cartList =
-                          FirestoreUser().getCarts(snapshot.data?.docs);
+                      List<CartData>? cartList;
+                      cartList = FirestoreUser().getCarts(snapshot.data?.docs);
+                      print("ok" + cartList![0].isSelected.toString());
                       if (cartList!.isEmpty) {
                         return Center(
                           child: Image.asset('assets/images/empty-cart.png'),
@@ -81,7 +81,8 @@ class _CartPageState extends State<CartPage> {
                                   // CartData item = ;
                                   return ItemOfCart(
                                     item: cartList![index],
-                                    id: id,
+                                    idCart: id,
+                                    alow: alow,
                                   );
                                 },
                               ),

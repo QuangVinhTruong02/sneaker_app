@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 class CartData {
   final String idProduct;
   final String name;
@@ -8,6 +9,7 @@ class CartData {
   final int size;
   int quantity;
   bool isSelected;
+  int? total;
 
   CartData({
     required this.idProduct,
@@ -18,7 +20,7 @@ class CartData {
     required this.size,
     required this.quantity,
     required this.isSelected,
-  });
+  }) : total = quantity * price;
 
   factory CartData.fromJson(Map<String, dynamic> json) {
     return CartData(

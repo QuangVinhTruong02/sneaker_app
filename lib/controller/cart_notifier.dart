@@ -17,19 +17,34 @@ class CartNotifier extends ChangeNotifier {
   int get getTotal => _total;
 
   set setTotal(int newValue) {
-    _total = 0;
+    _total = newValue;
   }
 
-  void total(int newTotal, bool checked) {
-    if (checked == true) {
-      _total += newTotal;
-    } else {
-      if (_total > 0) {
-        _total -= newTotal;
-      }
-    }
-    if (_total == 0) {
-      _isAllChecked = false;
+  // void total(int newTotal, bool checked) {
+  //   if (checked == true) {
+  //     _total += newTotal;
+  //   } else {
+  //     if (_total > 0) {
+  //       _total -= newTotal;
+  //     }
+  //   }
+  //   // if (_total == 0) {
+  //   //   _isAllChecked = false;
+  //   // }
+  //   notifyListeners();
+  // }
+
+  void incrementTotal(int newTotal) {
+    _total += newTotal;
+    // if (_total == 0) {
+    //   _isAllChecked = false;
+    // }
+    notifyListeners();
+  }
+
+  void decrementTotal(int newToTal) {
+    if (_total >= 0) {
+      _total -= newToTal;
     }
     notifyListeners();
   }

@@ -5,14 +5,11 @@ import 'package:sneaker_app/models/cart_data.dart';
 import 'package:sneaker_app/models/product_data.dart';
 
 class FirestoreUser {
-
   final _users = FirebaseFirestore.instance.collection('users');
   static late String idUser;
   //get item list
 
-
   //get item
- 
 
   Future<void> addCart(
       CartData cart, String idProduct, BuildContext context) async {
@@ -66,7 +63,7 @@ class FirestoreUser {
     return carts;
   }
 
-  void updateCheckedItemOfCart(String idCart, bool isChecked) async {
+  Future<void> updateCheckedItemOfCart(String idCart, bool isChecked) async {
     await _users
         .doc(idUser)
         .collection("cart")
@@ -74,15 +71,37 @@ class FirestoreUser {
         .update({"isSelected": isChecked});
   }
 
-  void updateQuantityItemOfCar(String idCart, int value) async {
+  void deleteItemOfCart(String idItem) async {
+    await _users.doc(idUser).collection("cart").doc(idItem).delete();
+  }
+
+  void incrementItem(String idCart, int value, BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Center(child: CircularProgressIndicator());
+      },
+    );
     await _users
         .doc(idUser)
         .collection("cart")
         .doc(idCart)
-        .update({"quantity": value});
+        .update({"quantity": (++value)});
+    Navigator.pop(context);
   }
 
-  void deleteItemOfCart(String idItem) async {
-    await _users.doc(idUser).collection("cart").doc(idItem).delete();
+  void decrementItem(String idCart, int value, BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Center(child: CircularProgressIndicator());
+      },
+    );
+    await _users
+        .doc(idUser)
+        .collection("cart")
+        .doc(idCart)
+        .update({"quantity": (--value)});
+    Navigator.pop(context);
   }
 }

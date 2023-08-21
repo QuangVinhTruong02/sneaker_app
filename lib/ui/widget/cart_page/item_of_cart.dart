@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:sneaker_app/controller/cart_notifier.dart';
 import 'package:sneaker_app/models/product_data.dart';
@@ -12,14 +13,16 @@ import '../../../models/cart_data.dart';
 import '../text_style.dart';
 
 class ItemOfCart extends StatefulWidget {
-  const ItemOfCart({
+  ItemOfCart({
     super.key,
     required this.item,
-    required this.id,
+    required this.idCart,
+    required this.alow,
   });
 
   final CartData item;
-  final String id;
+  final String idCart;
+  bool alow;
 
   @override
   State<ItemOfCart> createState() => _ItemOfCartState();
@@ -29,14 +32,16 @@ class _ItemOfCartState extends State<ItemOfCart> {
   @override
   void initState() {
     if (widget.item.isSelected == true) {
-      FirestoreUser().updateCheckedItemOfCart(widget.id, false);
+      FirestoreUser().updateCheckedItemOfCart(widget.idCart, false);
     }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    int amount = widget.item.price * widget.item.quantity;
+    bool check = widget.alow;
+    final provider = Provider.of<CartNotifier>(context, listen: false);
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
       child: Slidable(
@@ -48,10 +53,9 @@ class _ItemOfCartState extends State<ItemOfCart> {
               borderRadius: const BorderRadius.all(Radius.circular(16)),
               onPressed: (context) {
                 if (widget.item.isSelected == true) {
-                  Provider.of<CartNotifier>(context, listen: false)
-                      .total(amount, false);
+                  provider.decrementTotal(widget.item.total!);
                 }
-                FirestoreUser().deleteItemOfCart(widget.id);
+                FirestoreUser().deleteItemOfCart(widget.idCart);
               },
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
@@ -99,14 +103,15 @@ class _ItemOfCartState extends State<ItemOfCart> {
                 Checkbox(
                   value: widget.item.isSelected,
                   onChanged: (checked) {
-                    final provider =
-                        Provider.of<CartNotifier>(context, listen: false);
-
                     // provider.checkedList = widget.item.isSelected;
                     FirestoreUser()
-                        .updateCheckedItemOfCart(widget.id, checked!);
-
-                    provider.total(amount, checked);
+                        .updateCheckedItemOfCart(widget.idCart, checked!);
+                    check = checked;
+                    if (checked == true) {
+                      provider.incrementTotal(widget.item.total!);
+                    } else {
+                      provider.decrementTotal(widget.item.total!);
+                    }
                   },
                 ),
                 CachedNetworkImage(
@@ -136,19 +141,96 @@ class _ItemOfCartState extends State<ItemOfCart> {
                         'Size: ${widget.item.size}',
                         style: textStyleApp(
                           FontWeight.normal,
-                          Colors.black,
-                          18,
+                          Colors.grey,
+                          16,
                         ),
                       ),
                       const SizedBox(height: 5),
-                      Text(
-                        'Số lượng: ${widget.item.quantity}',
-                        style: textStyleApp(
-                          FontWeight.w500,
-                          Colors.black,
-                          18,
-                        ),
+                      // Text(
+                      //   'Số lượng: ${widget.item.quantity}',
+                      //   style: textStyleApp(
+                      //     FontWeight.w500,
+                      //     Colors.black,
+                      //     18,
+                      //   ),
+                      // ),
+                      // set quantity
+                      Row(
+                        children: [
+                          Container(
+                            height: 30,
+                            width: 30,
+                            decoration: BoxDecoration(
+                              color: widget.item.quantity == 1
+                                  ? Colors.grey
+                                  : Colors.blue[400],
+                              border: Border.all(color: Colors.black),
+                              shape: BoxShape.rectangle,
+                            ),
+                            child: GestureDetector(
+                              onTap: widget.item.quantity == 1
+                                  ? () {}
+                                  : () {
+                                      FirestoreUser().decrementItem(
+                                          widget.idCart,
+                                          widget.item.quantity,
+                                          context);
+                                      if (widget.item.isSelected) {
+                                        provider
+                                            .decrementTotal(widget.item.price);
+                                      }
+                                    },
+                              child: const Icon(
+                                MaterialCommunityIcons.minus,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: 50,
+                            height: 30,
+                            decoration: const BoxDecoration(
+                              border: Border.symmetric(
+                                horizontal: BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              shape: BoxShape.rectangle,
+                            ),
+                            child: Text(
+                              '${widget.item.quantity}',
+                              style: textStyleApp(
+                                FontWeight.normal,
+                                Colors.black,
+                                20,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Container(
+                            height: 30,
+                            width: 30,
+                            decoration: BoxDecoration(
+                              color: Colors.blue[400],
+                              border: Border.all(color: Colors.black),
+                              shape: BoxShape.rectangle,
+                            ),
+                            child: GestureDetector(
+                              onTap: () {
+                                FirestoreUser().incrementItem(widget.idCart,
+                                    widget.item.quantity, context);
+
+                                if (widget.item.isSelected) {
+                                  provider.incrementTotal(widget.item.price);
+                                }
+                              },
+                              child: const Icon(
+                                MaterialCommunityIcons.plus,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
+
                       const SizedBox(height: 5),
                       Text(
                         'Giá: ${formaCurrencyText(widget.item.price)}',

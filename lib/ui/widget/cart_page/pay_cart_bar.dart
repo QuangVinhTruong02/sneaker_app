@@ -14,7 +14,7 @@ class PayCartBar extends StatefulWidget {
   });
 
   final List<String> Ids;
-  final List<CartData>? cartList;
+  final List<CartData> cartList;
 
   @override
   State<PayCartBar> createState() => _PayCartBarState();
@@ -23,7 +23,7 @@ class PayCartBar extends StatefulWidget {
 class _PayCartBarState extends State<PayCartBar> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<CartNotifier>(context, listen: false).setTotal = 0;
     });
     super.initState();
@@ -33,25 +33,34 @@ class _PayCartBarState extends State<PayCartBar> {
   Widget build(BuildContext context) {
     return Consumer<CartNotifier>(
       builder: (context, cartNotifier, child) {
-        if (widget.cartList!.every((element) => element.isSelected == false)) {
-          cartNotifier.setTotal = 0;
-        }
+        // if (widget.cartList.every((element) => element.isSelected == false)) {
+        //   cartNotifier.setTotal = 0;
+        // }
         return Row(
           children: [
             Checkbox(
               value: cartNotifier.isAllChecked,
               onChanged: (checked) {
-                cartNotifier.isAllChecked = checked!;
-
-                // print(alow);
                 for (var element in widget.Ids) {
-                  FirestoreUser().updateCheckedItemOfCart(element, checked);
+                  FirestoreUser().updateCheckedItemOfCart(element, checked!);
                 }
-                for (var element in widget.cartList!) {
-                  int amount = element.price * element.quantity;
-                  cartNotifier.total(amount, checked);
+                cartNotifier.isAllChecked = checked!;
+                // for (var element in widget.cartList) {
+                //   cartNotifier.total(element.total!, checked);
+
+                //   print(element.isSelected);
+                // }
+                if (checked == true) {
+                  for (var element in widget.cartList) {
+                    if (element.isSelected != true) {
+                      cartNotifier.incrementTotal(element.total!);
+                    }
+                  }
+                } else {
+                  for (var element in widget.cartList) {
+                    cartNotifier.decrementTotal(element.total!);
+                  }
                 }
-                
               },
             ),
             Text(

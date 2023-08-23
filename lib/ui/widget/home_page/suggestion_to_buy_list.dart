@@ -13,10 +13,10 @@ class SuggestionToBuyList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: FirebaseFirestore.instance.collection("products").get(),
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance.collection("products").snapshots(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
+        if (snapshot.connectionState == ConnectionState.active) {
           List<ProductData>? products =
               FirestoreProduct().getProducts(snapshot.data?.docs);
           return GridView.builder(

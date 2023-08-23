@@ -6,10 +6,8 @@ import 'package:sneaker_app/controller/product_notifier.dart';
 import 'package:sneaker_app/ui/widget/text_style.dart';
 
 class ChooseQuantityWidget extends StatefulWidget {
-  final int? quantity;
   const ChooseQuantityWidget({
     super.key,
-    this.quantity,
   });
 
   @override
@@ -18,15 +16,7 @@ class ChooseQuantityWidget extends StatefulWidget {
 
 class _ChooseQuantityWidgetState extends State<ChooseQuantityWidget> {
   @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (widget.quantity != null) {
-        Provider.of<ProductNotifier>(context, listen: false).quantity =
-            widget.quantity!;
-      }
-    });
-    super.initState();
-  }
+  void initState() {}
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +37,7 @@ class _ChooseQuantityWidgetState extends State<ChooseQuantityWidget> {
                   decoration: BoxDecoration(
                     color: productNotifier.quantity == 1
                         ? Colors.grey
-                        : Colors.blue[400],
+                        : Colors.black,
                     border: Border.all(color: Colors.black),
                     shape: BoxShape.rectangle,
                   ),
@@ -57,8 +47,11 @@ class _ChooseQuantityWidgetState extends State<ChooseQuantityWidget> {
                         : () {
                             productNotifier.decrement();
                           },
-                    child: const Icon(
+                    child: Icon(
                       MaterialCommunityIcons.minus,
+                      color: productNotifier.quantity == 1
+                          ? Colors.black
+                          : Colors.white,
                     ),
                   ),
                 ),
@@ -87,7 +80,7 @@ class _ChooseQuantityWidgetState extends State<ChooseQuantityWidget> {
                   height: 30,
                   width: 30,
                   decoration: BoxDecoration(
-                    color: Colors.blue[400],
+                    color: Colors.black,
                     border: Border.all(color: Colors.black),
                     shape: BoxShape.rectangle,
                   ),
@@ -97,6 +90,7 @@ class _ChooseQuantityWidgetState extends State<ChooseQuantityWidget> {
                     },
                     child: const Icon(
                       MaterialCommunityIcons.plus,
+                      color: Colors.white,
                     ),
                   ),
                 ),

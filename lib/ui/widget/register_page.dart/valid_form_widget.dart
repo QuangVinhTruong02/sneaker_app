@@ -23,6 +23,12 @@ class _ValidFormWidgetState extends State<ValidFormWidget> {
 
   @override
   Widget build(BuildContext context) {
+    @override
+    void initState() {
+      widget.sink.add(widget.controller.text);
+      super.initState();
+    }
+
     return StreamBuilder(
       stream: widget.stream,
       builder: (context, snapshot) {
@@ -64,7 +70,9 @@ class _ValidFormWidgetState extends State<ValidFormWidget> {
                           : const Icon(Icons.visibility_off),
                     )
                   : null),
-          onChanged: (value) => widget.sink.add(value),
+          onChanged: (value) {
+            widget.sink.add(value);
+          },
           onTap: () {
             SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
                 overlays: [SystemUiOverlay.bottom]);

@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sneaker_app/controller/cart_notifier.dart';
 import 'package:sneaker_app/models/cart_data.dart';
-import 'package:sneaker_app/service/firestore_service/firestore_user.dart';
+import 'package:sneaker_app/service/firestore_service/firestore_user/firestore_user.dart';
 import 'package:sneaker_app/ui/widget/text_style.dart';
 
+import '../../service/firestore_service/firestore_user/firestore_cart.dart';
 import '../widget/cart_page/item_of_cart.dart';
 import '../widget/cart_page/pay_cart_bar.dart';
 
@@ -57,8 +58,7 @@ class _CartPageState extends State<CartPage> {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.active) {
                       List<CartData>? cartList;
-                      cartList = FirestoreUser().getCarts(snapshot.data?.docs);
-                      print("ok" + cartList![0].isSelected.toString());
+                      cartList = FirestoreCart().getCarts(snapshot.data?.docs);
                       if (cartList!.isEmpty) {
                         return Center(
                           child: Image.asset('assets/images/empty-cart.png'),
@@ -68,7 +68,7 @@ class _CartPageState extends State<CartPage> {
                           children: [
                             Expanded(
                               child: ListView.builder(
-                                itemCount: cartList!.length,
+                                itemCount: cartList.length,
                                 itemBuilder: (context, index) {
                                   String id = snapshot.data!.docs[index].id;
                                   Ids.add(id);
@@ -80,9 +80,9 @@ class _CartPageState extends State<CartPage> {
                                       .isAllChecked = alow;
                                   // CartData item = ;
                                   return ItemOfCart(
-                                    item: cartList![index],
+                                    item: cartList[index],
                                     idCart: id,
-                                    alow: alow,
+                                   
                                   );
                                 },
                               ),

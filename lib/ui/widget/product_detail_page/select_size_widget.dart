@@ -6,11 +6,10 @@ import 'package:sneaker_app/ui/widget/text_style.dart';
 
 class SelectSizeWidget extends StatefulWidget {
   final List<int> list;
-  final int? size;
+
   const SelectSizeWidget({
     super.key,
     required this.list,
-    this.size,
   });
 
   @override
@@ -23,10 +22,6 @@ class _SelectSizeWidgetState extends State<SelectSizeWidget> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<ProductNotifier>(context, listen: false).sizeList =
           widget.list;
-      if (widget.size != null) {
-        Provider.of<ProductNotifier>(context, listen: false).checkSize =
-            widget.size!;
-      }
     });
     super.initState();
   }
@@ -56,15 +51,16 @@ class _SelectSizeWidgetState extends State<SelectSizeWidget> {
                     width: 1,
                     style: BorderStyle.solid,
                   ),
-                  selectedColor: Colors.blue[400],
+                  selectedColor: Colors.black,
                   label: Text(
                     "${productNotifier.sizeList[index]}",
-                    style: textStyleApp(
-                      FontWeight.normal,
-                      Colors.black,
-                      18,
-                    ),
                   ),
+                  labelStyle: textStyleApp(
+                      FontWeight.normal,
+                      productNotifier.index == index
+                          ? Colors.white
+                          : Colors.black,
+                      18),
                   selected: productNotifier.index == index,
                   onSelected: (selected) {
                     productNotifier.index = index;

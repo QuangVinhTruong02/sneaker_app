@@ -48,7 +48,7 @@ class Validation {
       firstName, lastName, phone, address, (a, b, c, d) => true);
 
   //xác thực email
-  final validateEmail = StreamTransformer<String, String>.fromHandlers(
+  var validateEmail = StreamTransformer<String, String>.fromHandlers(
     handleData: (data, sink) {
       if (data.length != 1) {
         isEmail(data)
@@ -59,7 +59,7 @@ class Validation {
   );
 
   //xác thực tên
-  final validateName = StreamTransformer<String, String>.fromHandlers(
+  var validateName = StreamTransformer<String, String>.fromHandlers(
     handleData: (data, sink) {
       if (data.isNotEmpty) {
         isName(data) ? sink.add(data) : sink.addError('Vui lòng điền tên vào!');
@@ -68,7 +68,7 @@ class Validation {
   );
 
   //xác thực SĐT
-  final validatePhone = StreamTransformer<String, String>.fromHandlers(
+  var validatePhone = StreamTransformer<String, String>.fromHandlers(
     handleData: (data, sink) {
       if (data.isNotEmpty) {
         data.length == 10
@@ -79,7 +79,7 @@ class Validation {
   );
 
   //xác thực địa chỉ
-  final validateAddress = StreamTransformer<String, String>.fromHandlers(
+  var validateAddress = StreamTransformer<String, String>.fromHandlers(
     handleData: (data, sink) {
       if (data.isNotEmpty) {
         data.length >= 10
@@ -90,7 +90,7 @@ class Validation {
   );
 
   //xacs thực password
-  final validatePassword = StreamTransformer<String, String>.fromHandlers(
+  var validatePassword = StreamTransformer<String, String>.fromHandlers(
     handleData: (data, sink) {
       data.length >= 6
           ? sink.add(data)
@@ -99,8 +99,7 @@ class Validation {
   );
 
   //xác nhận
-  final validateConfirmPassword =
-      StreamTransformer<String, String>.fromHandlers(
+  var validateConfirmPassword = StreamTransformer<String, String>.fromHandlers(
     handleData: (data, sink) {
       (data.toString() == validation._password.value.toString())
           ? sink.add(data)

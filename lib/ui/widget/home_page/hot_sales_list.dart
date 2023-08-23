@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sneaker_app/service/firestore_service/firestore_product.dart';
-import 'package:sneaker_app/service/firestore_service/firestore_user.dart';
+import 'package:sneaker_app/service/firestore_service/firestore_user/firestore_user.dart';
 import 'package:sneaker_app/ui/view/product_detail_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

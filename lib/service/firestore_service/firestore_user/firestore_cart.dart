@@ -1,17 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:sneaker_app/models/cart_data.dart';
-import 'package:sneaker_app/models/product_data.dart';
+import 'package:sneaker_app/service/firestore_service/firestore_user/firestore_user.dart';
 
-class FirestoreUser {
+import '../../../models/cart_data.dart';
+
+class FirestoreCart {
   final _users = FirebaseFirestore.instance.collection('users');
-  static late String idUser;
-  //get item list
 
-  //get item
-
-  Future<void> addCart(
+   Future<void> addCart(
       CartData cart, String idProduct, BuildContext context) async {
     showDialog(
       context: context,
@@ -22,38 +18,27 @@ class FirestoreUser {
       },
     );
     try {
-      await _users.doc(idUser).collection('cart').get().then((querySnapshot) {
+      await _users.doc(FirestoreUser.idUser).collection('cart').get().then((querySnapshot) {
         var idCart = querySnapshot.docs.firstWhere((snapshot) =>
             snapshot.data()["idProduct"] == idProduct &&
             snapshot.data()["size"] == cart.size);
         if (idCart.exists) {
           cart.quantity += int.parse(idCart.data()["quantity"].toString());
           _users
-              .doc(idUser)
+              .doc(FirestoreUser.idUser)
               .collection("cart")
               .doc(idCart.id)
               .update(cart.toJson());
         }
       });
     } catch (e) {
-      _users.doc(idUser).collection("cart").add(cart.toJson());
+      _users.doc(FirestoreUser.idUser).collection("cart").add(cart.toJson());
     }
 
     Navigator.pop(context);
   }
 
-  void getCurrentUser() {
-    final user = FirebaseAuth.instance.currentUser!.email.toString();
-    _users.where("email", isEqualTo: user).get().then(
-          (snapshot) => snapshot.docs.forEach(
-            (document) {
-              idUser = document.reference.id;
-            },
-          ),
-        );
-  }
-
-  List<CartData>? getCarts(
+    List<CartData>? getCarts(
       List<QueryDocumentSnapshot<Map<String, dynamic>>>? docs) {
     List<CartData>? carts;
     carts = docs
@@ -65,14 +50,14 @@ class FirestoreUser {
 
   Future<void> updateCheckedItemOfCart(String idCart, bool isChecked) async {
     await _users
-        .doc(idUser)
+        .doc(FirestoreUser.idUser)
         .collection("cart")
         .doc(idCart)
         .update({"isSelected": isChecked});
   }
 
   void deleteItemOfCart(String idItem) async {
-    await _users.doc(idUser).collection("cart").doc(idItem).delete();
+    await _users.doc(FirestoreUser.idUser).collection("cart").doc(idItem).delete();
   }
 
   void incrementItem(String idCart, int value, BuildContext context) async {
@@ -83,7 +68,7 @@ class FirestoreUser {
       },
     );
     await _users
-        .doc(idUser)
+        .doc(FirestoreUser.idUser)
         .collection("cart")
         .doc(idCart)
         .update({"quantity": (++value)});
@@ -98,10 +83,11 @@ class FirestoreUser {
       },
     );
     await _users
-        .doc(idUser)
+        .doc(FirestoreUser.idUser)
         .collection("cart")
         .doc(idCart)
         .update({"quantity": (--value)});
     Navigator.pop(context);
   }
+
 }

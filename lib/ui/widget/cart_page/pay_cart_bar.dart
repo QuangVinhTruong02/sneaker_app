@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../../../controller/cart_notifier.dart';
 import '../../../models/cart_data.dart';
-import '../../../service/firestore_service/firestore_user.dart';
+import '../../../service/firestore_service/firestore_user/firestore_cart.dart';
+import '../../../service/firestore_service/firestore_user/firestore_user.dart';
 import '../text_style.dart';
 
 class PayCartBar extends StatefulWidget {
@@ -42,7 +43,7 @@ class _PayCartBarState extends State<PayCartBar> {
               value: cartNotifier.isAllChecked,
               onChanged: (checked) {
                 for (var element in widget.Ids) {
-                  FirestoreUser().updateCheckedItemOfCart(element, checked!);
+                  FirestoreCart().updateCheckedItemOfCart(element, checked!);
                 }
                 cartNotifier.isAllChecked = checked!;
                 // for (var element in widget.cartList) {
@@ -106,7 +107,7 @@ class _PayCartBarState extends State<PayCartBar> {
               height: MediaQuery.of(context).size.height * 0.9,
               width: MediaQuery.of(context).size.width * 0.27,
               decoration: const BoxDecoration(
-                color: Colors.blue,
+                color: Colors.black,
                 borderRadius: BorderRadius.all(
                   Radius.circular(12),
                 ),

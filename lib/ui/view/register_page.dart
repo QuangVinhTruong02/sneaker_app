@@ -45,6 +45,12 @@ class _RegisterPageState extends State<RegisterPage> {
     _addressController.dispose();
     _firstNameController.dispose();
     _lastNameController.dispose();
+    // validation.sinkEmail.close();
+    // validation.sinkFirstName.close();
+    // validation.sinkLastName.close();
+    // validation.sinkAddress.close();
+    // validation.sinkPhone.close();
+
     super.dispose();
   }
 
@@ -175,11 +181,11 @@ class _RegisterPageState extends State<RegisterPage> {
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16)),
-                        backgroundColor: snapshot.hasData == true && checkForm()
+                        backgroundColor: snapshot.data == true && checkForm()
                             ? Colors.blue
                             : Colors.grey,
                       ),
-                      onPressed: snapshot.hasData == true && checkForm()
+                      onPressed: snapshot.data == true && checkForm()
                           ? () {
                               Provider.of<AuthService>(context, listen: false)
                                   .SignUp(

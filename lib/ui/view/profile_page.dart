@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sneaker_app/models/user_data.dart';
-import 'package:sneaker_app/service/firestore_service/firestore_user.dart';
+import 'package:sneaker_app/service/firestore_service/firestore_user/firestore_user.dart';
 import 'package:sneaker_app/ui/view/edit_profile.dart';
 import 'package:sneaker_app/ui/widget/profile_page/profile_function.dart';
 import 'package:sneaker_app/ui/widget/text_style.dart';
@@ -14,21 +13,15 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int id = 0;
-
-    Future SignOut() async {
-      await FirebaseAuth.instance.signOut();
-    }
-
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
-      body: FutureBuilder(
-          future: FirebaseFirestore.instance
+      body: StreamBuilder(
+          stream: FirebaseFirestore.instance
               .collection("users")
               .doc(FirestoreUser.idUser)
-              .get(),
+              .snapshots(),
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.connectionState == ConnectionState.active) {
               UserData user = UserData.fromJson(snapshot.data!.data()!);
               return Stack(
                 children: [
@@ -36,7 +29,7 @@ class ProfilePage extends StatelessWidget {
                   Positioned(
                     bottom: 0,
                     child: Container(
-                      margin: const EdgeInsets.only(top: 48),
+                      //margin: const EdgeInsets.only(top: 48),
                       height: MediaQuery.of(context).size.height * 0.75,
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
@@ -84,6 +77,8 @@ class ProfilePage extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(24),
                                 ),
                               ),
+                              backgroundColor:
+                                  MaterialStatePropertyAll(Colors.black),
                             ),
                             child: Text(
                               "Edit Profile",

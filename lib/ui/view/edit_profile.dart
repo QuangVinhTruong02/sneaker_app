@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sneaker_app/models/user_data.dart';
+import 'package:sneaker_app/service/firestore_service/firestore_user/firestore_user.dart';
 import 'package:sneaker_app/ui/widget/profile_page/avata_user.dart';
 import 'package:sneaker_app/ui/widget/text_style.dart';
 
@@ -19,9 +20,22 @@ class _EditProfileState extends State<EditProfile> {
   final _lastNameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _addressController = TextEditingController();
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _phoneController.dispose();
+    _addressController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
+    validation.sinkFirstName.add(widget.user.firstName);
+    validation.sinkLastName.add(widget.user.lastName);
+    validation.sinkPhone.add(widget.user.phone);
+    validation.sinkAddress.add(widget.user.address);
+
     _firstNameController.text = widget.user.firstName;
     _lastNameController.text = widget.user.lastName;
     _phoneController.text = widget.user.phone;
@@ -30,7 +44,6 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   bool checkForm() {
-    List<bool> checks = List.empty(growable: true);
     if (_firstNameController.text != '' &&
         _firstNameController.text != widget.user.firstName) {
       return true;
@@ -64,9 +77,9 @@ class _EditProfileState extends State<EditProfile> {
               Image.asset("assets/images/top_image.png"),
               Positioned(
                 top: 15,
-                left: 15,
                 child: Container(
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery.of(context).size.width * 1,
+                  padding: EdgeInsets.symmetric(horizontal: 8),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -96,29 +109,33 @@ class _EditProfileState extends State<EditProfile> {
                       StreamBuilder(
                         stream: validation.submitEditProfile,
                         builder: (context, snapshot) {
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 16),
-                            child: IconButton(
-                              color: snapshot.hasData == true && checkForm()
-                                  ? Colors.blue
-                                  : Colors.grey,
-                              icon: Icon(Icons.check),
-                              onPressed: snapshot.hasData == true && checkForm()
-                                  ? () {
-                                      // Provider.of<AuthService>(context,
-                                      //         listen: false)
-                                      //     .SignUp(
-                                      //   _emailController.text.trim(),
-                                      //   _passwordController.text.trim(),
-                                      //   _firstNameController.text.trim(),
-                                      //   _lastNameController.text.trim(),
-                                      //   _phoneController.text.trim(),
-                                      //   _addressController.text.trim(),
-                                      //   context,
-                                      // );
-                                      print("okk");
-                                    }
-                                  : () {},
+                          return GestureDetector(
+                            onTap: snapshot.data == true && checkForm()
+                                ? () {
+                                    widget.user.firstName =
+                                        _firstNameController.text;
+                                    widget.user.lastName =
+                                        _lastNameController.text;
+                                    widget.user.phone = _phoneController.text;
+                                    widget.user.address =
+                                        _addressController.text;
+                                    FirestoreUser()
+                                        .updateDetailUser(widget.user, context);
+                                  }
+                                : () {},
+                            child: Text(
+                              "Update",
+                              style: snapshot.data == true && checkForm()
+                                  ? textStyleApp(
+                                      FontWeight.bold,
+                                      Colors.white,
+                                      18,
+                                    )
+                                  : textStyleApp(
+                                      FontWeight.bold,
+                                      Colors.grey,
+                                      18,
+                                    ),
                             ),
                           );
                         },
@@ -186,6 +203,7 @@ class _EditProfileState extends State<EditProfile> {
                           nameText: 'Address',
                           sink: validation.sinkAddress,
                         ),
+                        SizedBox(height: 15),
                       ],
                     ),
                   ),

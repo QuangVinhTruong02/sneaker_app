@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:sneaker_app/controller/product_notifier.dart';
 import 'package:sneaker_app/models/cart_data.dart';
 import 'package:sneaker_app/models/product_data.dart';
-import 'package:sneaker_app/service/firestore_service/firestore_user.dart';
+import 'package:sneaker_app/service/firestore_service/firestore_user/firestore_cart.dart';
+import 'package:sneaker_app/service/firestore_service/firestore_user/firestore_user.dart';
 import 'package:sneaker_app/ui/widget/product_detail_page/choose_quantity_widget.dart';
 import 'package:sneaker_app/ui/widget/product_detail_page/select_size_widget.dart';
 import 'package:sneaker_app/ui/widget/text_style.dart';
@@ -11,14 +12,10 @@ import 'package:sneaker_app/ui/widget/text_style.dart';
 class ProductDetailPage extends StatefulWidget {
   final ProductData product;
   final String idProduct;
-  final int? quantity;
-  final int? size;
   const ProductDetailPage({
     super.key,
     required this.product,
     required this.idProduct,
-    this.quantity,
-    this.size,
   });
 
   @override
@@ -75,7 +72,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         padding: const EdgeInsets.all(20),
                         child: SingleChildScrollView(
                           child: Column(
-                            mainAxisSize: MainAxisSize.max,
+                            //mainAxisSize: MainAxisSize.max,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Divider(
@@ -91,7 +88,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               ),
                               const SizedBox(height: 10),
                               Text(
-                                'Giá: ${widget.product.price}.000₫',
+                                'Giá: ${formaCurrencyText(widget.product.price)}',
                                 style: textStyleApp(
                                     FontWeight.w600, Colors.black, 20),
                               ),
@@ -112,7 +109,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               //select size
                               SelectSizeWidget(
                                 list: widget.product.sizes as List<int>,
-                                size: widget.size,
                               ),
                               const Divider(
                                 color: Colors.grey,
@@ -120,7 +116,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               ),
                               const SizedBox(height: 5),
                               //choose quantity
-                              ChooseQuantityWidget(quantity: widget.quantity),
+                              ChooseQuantityWidget(),
                               const SizedBox(height: 15),
                               Padding(
                                 padding:
@@ -137,7 +133,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                       quantity: provider.quantity,
                                       isSelected: false,
                                     );
-                                    FirestoreUser().addCart(
+                                    FirestoreCart().addCart(
                                         cart, widget.idProduct, context);
                                     Navigator.pop(context);
                                     provider.index = 0;
@@ -147,7 +143,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                   child: Container(
                                     height: 50,
                                     decoration: BoxDecoration(
-                                      color: Colors.blue[400],
+                                      color: Colors.black,
                                       borderRadius: const BorderRadius.all(
                                         Radius.circular(16),
                                       ),
@@ -157,7 +153,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                         'Thêm vào giỏ hàng',
                                         style: textStyleApp(
                                           FontWeight.bold,
-                                          Colors.black,
+                                          Colors.white,
                                           15,
                                         ),
                                         textAlign: TextAlign.center,

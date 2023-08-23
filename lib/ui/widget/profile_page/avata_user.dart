@@ -7,7 +7,7 @@ class AvataUser extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
+    return const Align(
       alignment: Alignment.topCenter,
       child: SizedBox(
         child: CircleAvatar(

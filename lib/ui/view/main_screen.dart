@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sneaker_app/controller/main_screen_notifier.dart';
-import 'package:sneaker_app/service/firestore_service/firestore_user.dart';
+import 'package:sneaker_app/service/firestore_service/firestore_user/firestore_user.dart';
 import 'package:sneaker_app/ui/view/profile_page.dart';
 import 'package:sneaker_app/ui/view/home_page.dart';
 import 'package:sneaker_app/ui/view/search_page.dart';
@@ -38,6 +38,7 @@ class _MainScreenState extends State<MainScreen> {
     return Consumer<MainScreenNotifier>(
       builder: (context, mainScreenNotifier, child) {
         return Scaffold(
+          resizeToAvoidBottomInset: true,
           // backgroundColor: Colors.black,
           body: pageList[mainScreenNotifier.position],
           bottomNavigationBar: const BottomNavigation(),

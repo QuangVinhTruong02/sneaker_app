@@ -32,11 +32,20 @@ class BottomNavigation extends StatelessWidget {
                       ? Colors.white
                       : Colors.grey,
                 ),
+                // ItemOfBottom(
+                //   onTap: () {
+                //     mainScreenNotifier.position = 1;
+                //   },
+                //   icon: Icons.favorite_outline,
+                //   color: mainScreenNotifier.position == 1
+                //       ? Colors.white
+                //       : Colors.grey,
+                // ),
                 ItemOfBottom(
                   onTap: () {
                     mainScreenNotifier.position = 1;
                   },
-                  icon: Icons.search,
+                  icon: Ionicons.cart,
                   color: mainScreenNotifier.position == 1
                       ? Colors.white
                       : Colors.grey,
@@ -45,17 +54,8 @@ class BottomNavigation extends StatelessWidget {
                   onTap: () {
                     mainScreenNotifier.position = 2;
                   },
-                  icon: Ionicons.cart,
-                  color: mainScreenNotifier.position == 2
-                      ? Colors.white
-                      : Colors.grey,
-                ),
-                ItemOfBottom(
-                  onTap: () {
-                    mainScreenNotifier.position = 3;
-                  },
                   icon: Icons.person,
-                  color: mainScreenNotifier.position == 3
+                  color: mainScreenNotifier.position == 2
                       ? Colors.white
                       : Colors.grey,
                 ),

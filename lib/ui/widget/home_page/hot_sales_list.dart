@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sneaker_app/service/firestore_service/firestore_product.dart';
-import 'package:sneaker_app/service/firestore_service/firestore_user/firestore_user.dart';
 import 'package:sneaker_app/ui/view/product_detail_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -38,9 +37,10 @@ class HotSalesList extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.all(10),
                 child: GestureDetector(
-                  onTap: () async{
+                  onTap: () async {
                     ProductData product;
-                    product = await FirestoreProduct().getProduct(snapshot.data!.docs[index].id);
+                    product = await FirestoreProduct()
+                        .getProduct(snapshot.data!.docs[index].id);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -66,48 +66,50 @@ class HotSalesList extends StatelessWidget {
                           ),
                         ],
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: MediaQuery.of(context).size.height * 0.25,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(list![index].image),
-                                fit: BoxFit.cover,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: MediaQuery.of(context).size.height * 0.25,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: NetworkImage(list![index].image),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(height: 10),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.1,
-                                  child: Text(
-                                    list![index].name,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-                                    style: textStyleApp(
-                                      FontWeight.bold,
-                                      Colors.black,
-                                      24,
+                            const SizedBox(height: 10),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.1,
+                                    child: Text(
+                                      list![index].name,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                      style: textStyleApp(
+                                        FontWeight.bold,
+                                        Colors.black,
+                                        24,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Text(
-                                  formaCurrencyText(list![index].price),
-                                  style: textStyleApp(
-                                      FontWeight.w600, Colors.black, 24),
-                                ),
-                              ],
+                                  Text(
+                                    formaCurrencyText(list![index].price),
+                                    style: textStyleApp(
+                                        FontWeight.w600, Colors.black, 24),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),

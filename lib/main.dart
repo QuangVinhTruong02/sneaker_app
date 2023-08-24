@@ -45,7 +45,9 @@ class MyApp extends StatelessWidget {
         Provider<AuthService>(create: (_) => AuthService()),
         Provider<FirestoreProduct>(create: (context) => FirestoreProduct()),
         Provider<FirestoreUser>(create: (context) => FirestoreUser()),
-        Provider<FirestoreCart>(create: (context) => FirestoreCart(),),
+        Provider<FirestoreCart>(
+          create: (context) => FirestoreCart(),
+        ),
         ChangeNotifierProvider<MainScreenNotifier>(
           create: (_) => MainScreenNotifier(),
         ),
@@ -56,7 +58,8 @@ class MyApp extends StatelessWidget {
           create: (context) => CartNotifier(),
         )
       ],
-      child: const MaterialApp(
+      child: MaterialApp(
+        
         debugShowCheckedModeBanner: false,
         home: AuthPage(),
       ),

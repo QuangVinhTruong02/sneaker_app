@@ -4,7 +4,6 @@ import 'package:sneaker_app/controller/main_screen_notifier.dart';
 import 'package:sneaker_app/service/firestore_service/firestore_user/firestore_user.dart';
 import 'package:sneaker_app/ui/view/profile_page.dart';
 import 'package:sneaker_app/ui/view/home_page.dart';
-import 'package:sneaker_app/ui/view/search_page.dart';
 
 import '../widget/main_screen/bottom_navigation.dart';
 import 'cart_page.dart';
@@ -19,7 +18,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   List<Widget> pageList = [
     const HomePage(),
-    const SearchPage(),
+    //const SearchPage(),
     const CartPage(),
     const ProfilePage(),
   ];

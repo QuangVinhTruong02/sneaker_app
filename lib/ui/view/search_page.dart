@@ -1,50 +1,44 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sneaker_app/ui/widget/search_page/product_list.dart';
+import 'package:sneaker_app/ui/view/product_detail_page.dart';
+import 'package:sneaker_app/ui/widget/home_page/custom_search.dart';
 import 'package:sneaker_app/ui/widget/text_style.dart';
 
 import '../../models/product_data.dart';
 import '../../service/firestore_service/firestore_product.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({super.key});
+  final String suggestion;
+  const SearchPage({super.key, required this.suggestion});
 
   @override
   State<SearchPage> createState() => _SearchPageState();
 }
 
 class _SearchPageState extends State<SearchPage> {
-  late Future<List<ProductData>> _products;
-  String search = "";
-  void _getList() {
-    _products = FirestoreProduct().getList();
-  }
+  // late Future<List<ProductData>> _products;
+  // String search = "";
+  // void _getList() {
+  //   _products = FirestoreProduct().getList(widget.suggestion.toString());
+  // }
 
   @override
   void initState() {
-    _getList();
+    //_getList();
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.immersive,
+    );
     super.initState();
   }
 
-  late List<ProductData> _productList;
-  List<ProductData> _productListTemp = List.empty(growable: true);
-
-  List<ProductData> _runFilter(List<ProductData> list) {
-    List<ProductData> results = List.empty(growable: true);
-    if (search.isEmpty) {
-      results = list;
-    } else {
-      results = list
-          .where((element) =>
-              element.name.toLowerCase().contains(search.toLowerCase()))
-          .toList();
-      // print(results[0].name);
-    }
-    return results;
-  }
+  List<ProductData> _productList = List.empty(growable: true);
+  List<String> _IdList = List.empty(growable: true);
 
   @override
   Widget build(BuildContext context) {
+    final _nameCotroller = TextEditingController();
+    _nameCotroller.text = widget.suggestion;
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.grey.shade200,
@@ -52,24 +46,45 @@ class _SearchPageState extends State<SearchPage> {
         children: [
           Image.asset('assets/images/top_image.png'),
           FutureBuilder(
-            future: _products,
+            future: FirebaseFirestore.instance.collection("products").get(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
-                _productList = snapshot.data ?? [];
-
-                _productListTemp = _runFilter(snapshot.data!);
+                snapshot.data!.docs.forEach((element) {
+                  if (element
+                      .data()["name"]
+                      .toString()
+                      .toLowerCase()
+                      .contains(widget.suggestion.toLowerCase())) {
+                    _productList.add(ProductData.fromJson(element.data()));
+                    _IdList.add(element.id);
+                  }
+                });
 
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
+                        horizontal: 2,
                         vertical: 8,
                       ),
-                      child: Text(
-                        "Search",
-                        style: textStyleApp(FontWeight.bold, Colors.white, 42),
+                      child: Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: Icon(
+                              Icons.arrow_back,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text(
+                            "Search",
+                            style:
+                                textStyleApp(FontWeight.bold, Colors.white, 42),
+                          ),
+                        ],
                       ),
                     ),
                     Padding(
@@ -78,11 +93,7 @@ class _SearchPageState extends State<SearchPage> {
                         vertical: 8,
                       ),
                       child: TextField(
-                        onSubmitted: (value) {
-                          search = value;
-                          print("Changed: " + value);
-                          
-                        },
+                        controller: _nameCotroller,
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
@@ -101,14 +112,9 @@ class _SearchPageState extends State<SearchPage> {
                           ),
                         ),
                         onTap: () {
-                          SystemChrome.setEnabledSystemUIMode(
-                              SystemUiMode.manual,
-                              overlays: [SystemUiOverlay.bottom]);
-                        },
-                        onTapOutside: (event) {
-                          FocusManager.instance.primaryFocus?.unfocus();
-                          SystemChrome.setEnabledSystemUIMode(
-                            SystemUiMode.immersive,
+                          showSearch(
+                            context: context,
+                            delegate: CustomSearch(),
                           );
                         },
                       ),
@@ -122,24 +128,22 @@ class _SearchPageState extends State<SearchPage> {
                           childAspectRatio: 1.9 / 2,
                           crossAxisCount: 2,
                         ),
-                        itemCount: _productListTemp.length,
+                        itemCount: _productList.length,
                         itemBuilder: (context, index) {
-                          print(
-                              "set ok: " + _productListTemp.length.toString());
                           return GestureDetector(
                             onTap: () async {
-                              // ProductData product;
-                              // product = await FirestoreProduct()
-                              //     .getProduct(snapshot.data!.docs[index].id);
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) => ProductDetailPage(
-                              //       product: product,
-                              //       idProduct: snapshot.data!.docs[index].id,
-                              //     ),
-                              //   ),
-                              // );
+                              ProductData product;
+                              product = await FirestoreProduct()
+                                  .getProduct(_IdList[index]);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ProductDetailPage(
+                                    product: product,
+                                    idProduct: _IdList[index],
+                                  ),
+                                ),
+                              );
                             },
                             child: Container(
                               padding: const EdgeInsets.all(5),
@@ -163,14 +167,14 @@ class _SearchPageState extends State<SearchPage> {
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
                                         image: NetworkImage(
-                                            _productListTemp[index].image),
+                                            _productList[index].image),
                                         fit: BoxFit.cover,
                                       ),
                                     ),
                                   ),
                                   const SizedBox(height: 5),
                                   Text(
-                                    _productListTemp[index].name,
+                                    _productList[index].name,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                     style: textStyleApp(
@@ -178,7 +182,7 @@ class _SearchPageState extends State<SearchPage> {
                                   ),
                                   Text(
                                     formaCurrencyText(
-                                        _productListTemp[index].price),
+                                        _productList[index].price),
                                     style: textStyleApp(
                                         FontWeight.w400, Colors.black, 16),
                                   ),

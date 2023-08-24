@@ -23,13 +23,15 @@ class FirestoreProduct {
     return product;
   }
 
-  Future<List<ProductData>> getList() async {
-    List<ProductData> productList = List.empty(growable: true);
-    await _products.get().then((querySnapshot) {
-      querySnapshot.docs.forEach((element) {
-        productList.add(ProductData.fromJson(element.data()));
-      });
-    });
-    return productList;
+  List<String> getBrand(
+      List<QueryDocumentSnapshot<Map<String, dynamic>>>? docs) {
+    List<String> result;
+    List<String>? tempList;
+    tempList = docs!
+        .map((documentSnapshot) => documentSnapshot.data()["brand"])
+        .cast<String>()
+        .toList();
+    result = tempList.toSet().toList();
+    return result;
   }
 }

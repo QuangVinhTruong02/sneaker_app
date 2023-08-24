@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../../../controller/cart_notifier.dart';
 import '../../../models/cart_data.dart';
 import '../../../service/firestore_service/firestore_user/firestore_cart.dart';
-import '../../../service/firestore_service/firestore_user/firestore_user.dart';
 import '../text_style.dart';
 
 class PayCartBar extends StatefulWidget {

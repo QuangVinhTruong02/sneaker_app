@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sneaker_app/controller/product_notifier.dart';
 import 'package:sneaker_app/models/cart_data.dart';
 import 'package:sneaker_app/models/product_data.dart';
 import 'package:sneaker_app/service/firestore_service/firestore_user/firestore_cart.dart';
-import 'package:sneaker_app/service/firestore_service/firestore_user/firestore_user.dart';
 import 'package:sneaker_app/ui/widget/product_detail_page/choose_quantity_widget.dart';
 import 'package:sneaker_app/ui/widget/product_detail_page/select_size_widget.dart';
 import 'package:sneaker_app/ui/widget/text_style.dart';
@@ -23,6 +23,12 @@ class ProductDetailPage extends StatefulWidget {
 }
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
+  @override
+  void initState() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<ProductNotifier>(context, listen: false);

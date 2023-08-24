@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
+import '../widget/home_page/custom_search.dart';
 import '../widget/home_page/hot_sales_list.dart';
 import '../widget/home_page/suggestion_to_buy_list.dart';
 import '../widget/text_style.dart';
@@ -15,6 +17,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.grey.shade200,
       body: Stack(
         children: [
@@ -23,10 +26,30 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 20, 0, 0),
-                child: Text(
-                  'Collection shoes',
-                  style: textStyleApp(FontWeight.bold, Colors.white, 42),
+                padding: const EdgeInsets.fromLTRB(16, 20, 20, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Discover',
+                      style: textStyleApp(FontWeight.bold, Colors.white, 42),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        showSearch(
+                          context: context,
+                          delegate: CustomSearch(),
+                        );
+                        SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+                            overlays: [SystemUiOverlay.bottom]);
+                      },
+                      icon: Icon(
+                        Icons.search,
+                        color: Colors.white,
+                        size: 35,
+                      ),
+                    )
+                  ],
                 ),
               ),
               Expanded(
@@ -60,7 +83,7 @@ class _HomePageState extends State<HomePage> {
                     Padding(
                       padding: const EdgeInsets.only(left: 15),
                       child: Text(
-                        'Buying Suggestions',
+                        'Suggestions',
                         style: textStyleApp(FontWeight.w500, Colors.black, 18),
                       ),
                     ),

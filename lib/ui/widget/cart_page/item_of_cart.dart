@@ -6,7 +6,6 @@ import 'package:sneaker_app/controller/cart_notifier.dart';
 import 'package:sneaker_app/models/product_data.dart';
 import 'package:sneaker_app/service/firestore_service/firestore_product.dart';
 import 'package:sneaker_app/service/firestore_service/firestore_user/firestore_cart.dart';
-import 'package:sneaker_app/service/firestore_service/firestore_user/firestore_user.dart';
 import 'package:sneaker_app/ui/view/product_detail_page.dart';
 import 'package:sneaker_app/ui/widget/cart_page/quantity_of_cart.dart';
 

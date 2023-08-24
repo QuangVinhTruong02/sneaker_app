@@ -15,8 +15,6 @@ class ChooseQuantityWidget extends StatefulWidget {
 }
 
 class _ChooseQuantityWidgetState extends State<ChooseQuantityWidget> {
-  @override
-  void initState() {}
 
   @override
   Widget build(BuildContext context) {

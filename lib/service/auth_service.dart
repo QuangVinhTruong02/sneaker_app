@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:sneaker_app/models/user_data.dart';
 
@@ -12,12 +13,12 @@ class AuthService {
       email: email,
       password: password,
     )
-        .then((value) { 
+        .then((value) {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Đăng nhập thành công')));
     }).onError((error, stackTrace) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Sai emai hoặc mật khẩu')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Sai emai hoặc mật khẩu')));
     });
   }
 
@@ -44,6 +45,9 @@ class AuthService {
           );
         },
       );
+      Reference referenceRoot = FirebaseStorage.instance.ref();
+      Reference referenceImage = referenceRoot.child("profile.png");
+      String image = await referenceImage.getDownloadURL();
 
       UserData user = UserData(
         email: email,
@@ -51,6 +55,7 @@ class AuthService {
         lastName: lastName,
         phone: phone,
         address: address,
+        avatar: image,
       );
       await FirebaseFirestore.instance.collection('users').add(user.toJson());
       //     {

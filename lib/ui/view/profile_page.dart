@@ -115,7 +115,7 @@ class ProfilePage extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.only(
                         top: MediaQuery.of(context).size.height * 0.08),
-                    child: AvataUser(),
+                    child: AvataUser(checkPage: false, imageUrl: user.avatar),
                   ),
                 ],
               );
@@ -127,37 +127,4 @@ class ProfilePage extends StatelessWidget {
           }),
     );
   }
-  // body: FutureBuilder(
-  //   future: FirebaseFirestore.instance
-  //       .collection('users')
-  //       .orderBy('createdAt', descending: true)
-  //       .limit(1)
-  //       .get(),
-  //   builder: (context, snapshot) {
-  //     if (snapshot.hasData) {
-  //       final b = snapshot.data!.docs.first.reference.id;
-
-  //       return Column(
-  //         children: [
-  //           Text(id.toString()),
-  //           Text(b.toString()),
-  //           Text(
-  //               "${FirebaseAuth.instance.currentUser!.email.toString()}"),
-  //           ElevatedButton(
-  //             onPressed: () {
-  //               Provider.of<MainScreenNotifier>(context, listen: false)
-  //                   .position = 0;
-  //               AuthService().SignOut();
-  //             },
-  //             child: Text('sign out'),
-  //           ),
-  //         ],
-  //       );
-  //     } else {
-  //       return Center(
-  //         child: CircularProgressIndicator(),
-  //       );
-  //     }
-  //   },
-  // ));
 }

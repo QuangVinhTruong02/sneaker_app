@@ -6,12 +6,13 @@ import 'package:sneaker_app/models/user_data.dart';
 class FirestoreUser {
   final _users = FirebaseFirestore.instance.collection('users');
   static late String idUser;
+  static late String email;
   //get item list
 
   //get item
   void getCurrentUser() {
-    final user = FirebaseAuth.instance.currentUser!.email.toString();
-    _users.where("email", isEqualTo: user).get().then(
+    email = FirebaseAuth.instance.currentUser!.email.toString();
+    _users.where("email", isEqualTo: email).get().then(
           (snapshot) => snapshot.docs.forEach(
             (document) {
               idUser = document.reference.id;

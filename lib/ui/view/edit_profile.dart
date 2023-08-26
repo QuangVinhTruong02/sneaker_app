@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sneaker_app/models/user_data.dart';
 import 'package:sneaker_app/service/firestore_service/firestore_user/firestore_user.dart';
 import 'package:sneaker_app/ui/widget/profile_page/avata_user.dart';
@@ -20,6 +24,7 @@ class _EditProfileState extends State<EditProfile> {
   final _lastNameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _addressController = TextEditingController();
+
   @override
   void dispose() {
     _firstNameController.dispose();
@@ -61,6 +66,17 @@ class _EditProfileState extends State<EditProfile> {
       return true;
     }
     return false;
+  }
+
+  String image = "";
+  void onTap() async {
+    ImagePicker imagePicker = new ImagePicker();
+    XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
+    // print("path: ${file?.path}");
+
+    if (file == null) return;
+
+    image = file.path;
   }
 
   @override
@@ -110,8 +126,29 @@ class _EditProfileState extends State<EditProfile> {
                         stream: validation.submitEditProfile,
                         builder: (context, snapshot) {
                           return GestureDetector(
-                            onTap: snapshot.data == true && checkForm()
-                                ? () {
+                            onTap: (snapshot.data == true && checkForm()) ||
+                                    image != ""
+                                ? () async {
+                                    if (image != "") {
+                                      Reference referenceRoot =
+                                          FirebaseStorage.instance.ref();
+                                      Reference referenceDirImages =
+                                          referenceRoot
+                                              .child(FirestoreUser.email);
+                                      Reference referenceImageToUpload =
+                                          referenceDirImages.child("avatar");
+                                      try {
+                                        await referenceImageToUpload
+                                            .putFile(File(image));
+                                        image = await referenceImageToUpload
+                                            .getDownloadURL();
+                                        widget.user.avatar = image;
+                                        print("image: ${image}");
+                                      } catch (e) {
+                                        e.toString();
+                                      }
+                                    }
+
                                     widget.user.firstName =
                                         _firstNameController.text;
                                     widget.user.lastName =
@@ -119,13 +156,15 @@ class _EditProfileState extends State<EditProfile> {
                                     widget.user.phone = _phoneController.text;
                                     widget.user.address =
                                         _addressController.text;
+
                                     FirestoreUser()
                                         .updateDetailUser(widget.user, context);
                                   }
                                 : () {},
                             child: Text(
                               "Update",
-                              style: snapshot.data == true && checkForm()
+                              style: (snapshot.data == true && checkForm()) ||
+                                      image != ""
                                   ? textStyleApp(
                                       FontWeight.bold,
                                       Colors.white,
@@ -212,7 +251,12 @@ class _EditProfileState extends State<EditProfile> {
               Container(
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.15),
-                child: AvataUser(),
+                child: AvataUser(
+                  imageUrl: widget.user.avatar,
+                  imageLocal: image,
+                  checkPage: true,
+                  onTap: onTap,
+                ),
               ),
             ],
           ),

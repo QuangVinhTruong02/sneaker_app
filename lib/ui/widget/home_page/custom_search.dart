@@ -5,7 +5,6 @@ import 'package:sneaker_app/service/firestore_service/firestore_product.dart';
 import 'package:sneaker_app/ui/view/search_page.dart';
 
 class CustomSearch extends SearchDelegate {
-  List<String> allData = ['Adidas', 'Nike', 'Vans', 'Baleciaga'];
 
   @override
   List<Widget>? buildActions(BuildContext context) {

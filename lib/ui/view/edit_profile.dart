@@ -9,7 +9,7 @@ import 'package:sneaker_app/ui/widget/profile_page/avata_user.dart';
 import 'package:sneaker_app/ui/widget/text_style.dart';
 
 import '../../service/validation.dart';
-import '../widget/register_page.dart/valid_form_widget.dart';
+import '../widget/edit_profile/user_infomation.dart';
 
 class EditProfile extends StatefulWidget {
   final UserData user;
@@ -36,13 +36,13 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   void initState() {
-    validation.sinkFirstName.add(widget.user.firstName);
-    validation.sinkLastName.add(widget.user.lastName);
+    validation.sinkFirstName.add(widget.user.firstName!);
+    validation.sinkLastName.add(widget.user.lastName!);
     validation.sinkPhone.add(widget.user.phone);
     validation.sinkAddress.add(widget.user.address);
 
-    _firstNameController.text = widget.user.firstName;
-    _lastNameController.text = widget.user.lastName;
+    _firstNameController.text = widget.user.firstName!;
+    _lastNameController.text = widget.user.lastName!;
     _phoneController.text = widget.user.phone;
     _addressController.text = widget.user.address;
     super.initState();
@@ -183,71 +183,13 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                 ),
               ),
-              Positioned(
-                bottom: 0,
-                child: Container(
-                  margin: const EdgeInsets.only(top: 48),
-                  height: MediaQuery.of(context).size.height * 0.75,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16.0),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.09,
-                      left: 8,
-                      right: 8,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Row(
-                          children: [
-                            //first name
-                            Flexible(
-                              flex: 1,
-                              child: ValidFormWidget(
-                                stream: validation.firstName,
-                                controller: _firstNameController,
-                                nameText: 'First Name',
-                                sink: validation.sinkFirstName,
-                              ),
-                            ),
-                            const SizedBox(width: 15),
-                            //last name
-                            Flexible(
-                              flex: 1,
-                              child: ValidFormWidget(
-                                stream: validation.lastName,
-                                controller: _lastNameController,
-                                nameText: 'Last Name',
-                                sink: validation.sinkLastName,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 15),
-                        ValidFormWidget(
-                          stream: validation.phone,
-                          controller: _phoneController,
-                          nameText: 'Phone',
-                          sink: validation.sinkPhone,
-                        ),
-                        //address
-                        const SizedBox(height: 15),
-                        ValidFormWidget(
-                          stream: validation.address,
-                          controller: _addressController,
-                          nameText: 'Address',
-                          sink: validation.sinkAddress,
-                        ),
-                        SizedBox(height: 15),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+
+              //validation infomation
+              UserInfomation(
+                  firstNameController: _firstNameController,
+                  lastNameController: _lastNameController,
+                  phoneController: _phoneController,
+                  addressController: _addressController),
               Container(
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.15),

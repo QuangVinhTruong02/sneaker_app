@@ -54,7 +54,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             snap: false,
             floating: true,
             backgroundColor: Colors.transparent,
-            expandedHeight: MediaQuery.of(context).size.height,
+            expandedHeight: MediaQuery.of(context).size.height * 1,
             flexibleSpace: FlexibleSpaceBar(
               background: Stack(
                 children: [
@@ -69,7 +69,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     ),
                   ),
                   Positioned(
-                    bottom: 0,
+                    bottom: -20,
                     child: Container(
                       height: MediaQuery.of(context).size.height * 0.5,
                       width: MediaQuery.of(context).size.width,
@@ -135,6 +135,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                       image: widget.product.image,
                                       price: widget.product.price,
                                       brand: widget.product.brand,
+                                      shopName: widget.product.shop,
                                       size: provider.value,
                                       quantity: provider.quantity,
                                       isSelected: false,

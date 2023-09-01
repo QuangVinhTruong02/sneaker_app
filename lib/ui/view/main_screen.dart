@@ -26,6 +26,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     FirestoreUser().getCurrentUser();
+   
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<MainScreenNotifier>(context, listen: false).position = 0;
     });

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sneaker_app/models/order_data.dart';
+import 'package:sneaker_app/service/firestore_service/firestore_user/firestore_order.dart';
+import 'package:sneaker_app/service/firestore_service/firestore_user/firestore_user.dart';
+import 'package:sneaker_app/ui/view/purchase_history.dart';
 
 import '../../../controller/cart_notifier.dart';
 import '../../../models/cart_data.dart';
@@ -31,8 +35,11 @@ class _PayCartBarState extends State<PayCartBar> {
 
   @override
   Widget build(BuildContext context) {
+    bool check = widget.cartList.any((element) => element.isSelected == true);
+
     return Consumer<CartNotifier>(
       builder: (context, cartNotifier, child) {
+        print(FirestoreUser.fullNameUser);
         // if (widget.cartList.every((element) => element.isSelected == false)) {
         //   cartNotifier.setTotal = 0;
         // }
@@ -44,12 +51,9 @@ class _PayCartBarState extends State<PayCartBar> {
                 for (var element in widget.Ids) {
                   FirestoreCart().updateCheckedItemOfCart(element, checked!);
                 }
-                cartNotifier.isAllChecked = checked!;
-                // for (var element in widget.cartList) {
-                //   cartNotifier.total(element.total!, checked);
 
-                //   print(element.isSelected);
-                // }
+                cartNotifier.isAllChecked = checked!;
+
                 if (checked == true) {
                   for (var element in widget.cartList) {
                     if (element.isSelected != true) {
@@ -64,11 +68,11 @@ class _PayCartBarState extends State<PayCartBar> {
               },
             ),
             Text(
-              'Select All',
+              'Chọn tất cả',
               style: textStyleApp(
                 FontWeight.normal,
                 Colors.black,
-                18,
+                15,
               ),
             ),
             const SizedBox(width: 20),
@@ -77,12 +81,14 @@ class _PayCartBarState extends State<PayCartBar> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    'Total',
-                    style: textStyleApp(
-                      FontWeight.normal,
-                      Colors.black,
-                      18,
+                  FittedBox(
+                    child: Text(
+                      'Tổng cộng',
+                      style: textStyleApp(
+                        FontWeight.normal,
+                        Colors.black,
+                        18,
+                      ),
                     ),
                   ),
                   FittedBox(
@@ -102,22 +108,56 @@ class _PayCartBarState extends State<PayCartBar> {
               ),
             ),
             const SizedBox(width: 28),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.9,
-              width: MediaQuery.of(context).size.width * 0.27,
-              decoration: const BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(12),
+            GestureDetector(
+              onTap: check
+                  ? () async {
+                      List<String> deleteList = List.empty(growable: true);
+                      for (int i = 0; i < widget.cartList.length; i++) {
+                        if (widget.cartList[i].isSelected == true) {
+                          OrderData orderData = OrderData(
+                            idProduct: widget.cartList[i].idProduct,
+                            name: widget.cartList[i].name,
+                            image: widget.cartList[i].image,
+                            price: widget.cartList[i].price,
+                            brand: widget.cartList[i].brand,
+                            size: widget.cartList[i].size,
+                            shopName: widget.cartList[i].shopName,
+                            quantity: widget.cartList[i].quantity,
+                            status: false,
+                            emailUser: FirestoreUser.email,
+                            nameUser: FirestoreUser.fullNameUser,
+                          );
+                          deleteList.add(widget.Ids[i]);
+                          await FirestoreOrder().addOrder(orderData, context);
+                        }
+                      }
+                      deleteList.forEach((element) async {
+                        await FirestoreCart().deleteItemOfCart(element);
+                      });
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PurchaseHistory()),
+                      );
+                    }
+                  : () {},
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.9,
+                width: MediaQuery.of(context).size.width * 0.27,
+                decoration: const BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
                 ),
-              ),
-              child: Center(
-                child: Text(
-                  "Mua hàng",
-                  style: textStyleApp(
-                    FontWeight.bold,
-                    Colors.white,
-                    18,
+                child: Center(
+                  child: Text(
+                    "Mua hàng",
+                    style: textStyleApp(
+                      FontWeight.bold,
+                      Colors.white,
+                      18,
+                    ),
                   ),
                 ),
               ),

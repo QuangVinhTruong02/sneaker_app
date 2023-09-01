@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class AvataUser extends StatelessWidget {
@@ -14,7 +15,7 @@ class AvataUser extends StatelessWidget {
     required this.checkPage,
     this.onTap,
   });
-
+ 
   @override
   Widget build(BuildContext context) {
     return checkPage == true ? _editProfile() : _profilePage();
@@ -31,7 +32,7 @@ class AvataUser extends StatelessWidget {
             backgroundColor: Colors.white,
             radius: 50.0,
             backgroundImage: (imageLocal == null || imageLocal == "")
-                ? NetworkImage(imageUrl!) as ImageProvider
+                ? CachedNetworkImageProvider(imageUrl!) as ImageProvider
                 : FileImage(File(imageLocal!)),
             child: Align(
               alignment: Alignment.bottomRight,
@@ -64,7 +65,7 @@ class AvataUser extends StatelessWidget {
           child: CircleAvatar(
             backgroundColor: Colors.white,
             radius: 50.0,
-            backgroundImage: NetworkImage(imageUrl!),
+            backgroundImage: CachedNetworkImageProvider(imageUrl!),
           ),
         ),
       ),

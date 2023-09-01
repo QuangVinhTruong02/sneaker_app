@@ -7,15 +7,28 @@ class FirestoreUser {
   final _users = FirebaseFirestore.instance.collection('users');
   static late String idUser;
   static late String email;
+  static late String fullNameUser;
   //get item list
 
   //get item
-  void getCurrentUser() {
+  Future getCurrentUser() async {
     email = FirebaseAuth.instance.currentUser!.email.toString();
-    _users.where("email", isEqualTo: email).get().then(
+    await _users.where("email", isEqualTo: email).get().then(
           (snapshot) => snapshot.docs.forEach(
             (document) {
               idUser = document.reference.id;
+              FirebaseFirestore.instance
+                  .collection("users")
+                  .doc(idUser)
+                  .get()
+                  .then((value) {
+                fullNameUser = value.data()!["firstName"] +
+                    " " +
+                    value.data()!["lastName"];
+              });
+              // "${document.data()["firstName"] + [
+              //       " "
+              //     ] + document.data()["lastName"]}";
             },
           ),
         );

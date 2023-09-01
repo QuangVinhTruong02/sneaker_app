@@ -6,6 +6,7 @@ import 'package:sneaker_app/controller/cart_notifier.dart';
 import 'package:sneaker_app/controller/product_notifier.dart';
 import 'package:sneaker_app/service/auth_service.dart';
 import 'package:sneaker_app/service/firestore_service/firestore_product.dart';
+import 'package:sneaker_app/service/firestore_service/firestore_shop.dart';
 import 'package:sneaker_app/service/firestore_service/firestore_user/firestore_cart.dart';
 import 'package:sneaker_app/service/firestore_service/firestore_user/firestore_user.dart';
 import 'package:sneaker_app/controller/main_screen_notifier.dart';
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
         Provider<AuthService>(create: (_) => AuthService()),
         Provider<FirestoreProduct>(create: (context) => FirestoreProduct()),
         Provider<FirestoreUser>(create: (context) => FirestoreUser()),
+        Provider<FirestoreShop>(create: (context) => FirestoreShop()),
         Provider<FirestoreCart>(
           create: (context) => FirestoreCart(),
         ),

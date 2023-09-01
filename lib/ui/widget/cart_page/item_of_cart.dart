@@ -99,8 +99,8 @@ class _ItemOfCartState extends State<ItemOfCart> {
                   value: widget.item.isSelected,
                   onChanged: (checked) {
                     // provider.checkedList = widget.item.isSelected;
-                    FirestoreCart()
-                        .updateCheckedItemOfCart(widget.idCart, checked!);
+                    FirestoreCart().updateCheckedItemOfCart(
+                        widget.idCart, checked!);
 
                     if (checked == true) {
                       provider.incrementTotal(widget.item.total!);

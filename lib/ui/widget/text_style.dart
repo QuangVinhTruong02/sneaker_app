@@ -8,6 +8,6 @@ TextStyle textStyleApp(FontWeight fontWeight, Color colors, double fontsize) {
 }
 
 String formaCurrencyText(int value) {
-  var f = NumberFormat.simpleCurrency(locale: 'vi-VN', decimalDigits: 3);
+  var f = NumberFormat.simpleCurrency(locale: 'vi-VN');
   return f.format(value).replaceAll(',', '.');
 }

@@ -19,12 +19,7 @@ class HotSalesList extends StatelessWidget {
           .orderBy("price", descending: true)
           .limit(10)
           .snapshots(),
-      // FutureBuilder(
-      //   future: FirebaseFirestore.instance
-      //       .collection("products")
-      //       .orderBy("price", descending: true)
-      //       .limit(10)
-      //       .get(),
+     
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           list = FirestoreProduct().getProducts(snapshot.data?.docs);

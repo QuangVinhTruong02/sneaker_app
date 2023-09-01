@@ -1,16 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserData {
-  String email;
-  String firstName;
-  String lastName;
+  String? email;
+  String? firstName;
+  String? lastName;
   String phone;
   String address;
   String? avatar;
   UserData({
-    required this.email,
-    required this.firstName,
-    required this.lastName,
+     this.email,
+     this.firstName,
+     this.lastName,
     required this.phone,
     required this.address,
     this.avatar,

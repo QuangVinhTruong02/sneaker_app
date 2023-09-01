@@ -7,8 +7,9 @@ class CartData {
   final int price;
   final String brand;
   final int size;
+  final String shopName;
   int quantity;
-  bool isSelected;
+   bool? isSelected;
   int? total;
 
   CartData({
@@ -18,8 +19,9 @@ class CartData {
     required this.price,
     required this.brand,
     required this.size,
+    required this.shopName,
     required this.quantity,
-    required this.isSelected,
+    this.isSelected,
   }) : total = quantity * price;
 
   factory CartData.fromJson(Map<String, dynamic> json) {
@@ -30,6 +32,7 @@ class CartData {
       price: json['price'],
       brand: json['brand'],
       size: json['size'],
+      shopName: json['shopName'],
       quantity: json['quantity'],
       isSelected: json['isSelected'],
     );
@@ -43,6 +46,7 @@ class CartData {
       'price': price,
       'brand': brand,
       'size': size,
+      'shopName': shopName,
       'quantity': quantity,
       'isSelected': isSelected,
       'createdAt': FieldValue.serverTimestamp(),

@@ -7,7 +7,7 @@ import '../../../models/cart_data.dart';
 class FirestoreCart {
   final _users = FirebaseFirestore.instance.collection('users');
 
-   Future<void> addCart(
+  Future<void> addCart(
       CartData cart, String idProduct, BuildContext context) async {
     showDialog(
       context: context,
@@ -18,7 +18,11 @@ class FirestoreCart {
       },
     );
     try {
-      await _users.doc(FirestoreUser.idUser).collection('cart').get().then((querySnapshot) {
+      await _users
+          .doc(FirestoreUser.idUser)
+          .collection('cart')
+          .get()
+          .then((querySnapshot) {
         var idCart = querySnapshot.docs.firstWhere((snapshot) =>
             snapshot.data()["idProduct"] == idProduct &&
             snapshot.data()["size"] == cart.size);
@@ -38,7 +42,7 @@ class FirestoreCart {
     Navigator.pop(context);
   }
 
-    List<CartData>? getCarts(
+  List<CartData>? getCarts(
       List<QueryDocumentSnapshot<Map<String, dynamic>>>? docs) {
     List<CartData>? carts;
     carts = docs
@@ -46,6 +50,16 @@ class FirestoreCart {
         .toList();
 
     return carts;
+  }
+
+   List<String>? getIds(
+      List<QueryDocumentSnapshot<Map<String, dynamic>>>? docs) {
+    List<String>? ids;
+    ids = docs
+        ?.map((documentSnapshot) => documentSnapshot.id)
+        .toList();
+
+    return ids;
   }
 
   Future<void> updateCheckedItemOfCart(String idCart, bool isChecked) async {
@@ -56,8 +70,14 @@ class FirestoreCart {
         .update({"isSelected": isChecked});
   }
 
-  void deleteItemOfCart(String idItem) async {
-    await _users.doc(FirestoreUser.idUser).collection("cart").doc(idItem).delete();
+  Future deleteItemOfCart(String idItem) async {
+    
+    await _users
+        .doc(FirestoreUser.idUser)
+        .collection("cart")
+        .doc(idItem)
+        .delete();
+    
   }
 
   void incrementItem(String idCart, int value, BuildContext context) async {
@@ -89,5 +109,4 @@ class FirestoreCart {
         .update({"quantity": (--value)});
     Navigator.pop(context);
   }
-
 }

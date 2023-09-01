@@ -2,9 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductData {
   final String name;
-  final String image;
+  String image;
   final int price;
   final String brand;
+  final String shop;
   List<dynamic> sizes;
 
   ProductData({
@@ -12,6 +13,7 @@ class ProductData {
     required this.image,
     required this.price,
     required this.brand,
+    required this.shop,
     required this.sizes,
   });
 
@@ -21,6 +23,7 @@ class ProductData {
       image: json['image'],
       price: int.parse(json['price'].toString()),
       brand: json['brand'],
+      shop: json['shop'],
       sizes: List<dynamic>.from(json['size'].map((x) => x)).cast<int>(),
     );
   }
@@ -31,8 +34,22 @@ class ProductData {
       'image': image,
       'price': price,
       'brand': brand,
-      'size': List<dynamic>.from(sizes.map((x) => x.toJson())),
+      'shop': shop,
+      'size': FieldValue.arrayUnion(sizes),
       'createdAt': FieldValue.serverTimestamp(),
+      'updateAt': FieldValue.serverTimestamp(),
+    };
+  }
+
+  Map<String, dynamic> toJsonUpdate() {
+    return {
+      'name': name,
+      'image': image,
+      'price': price,
+      'brand': brand,
+      'shop': shop,
+      'size': List<dynamic>.from(sizes.map((x) => x.toJson())),
+      'updateAt': FieldValue.serverTimestamp(),
     };
   }
 }

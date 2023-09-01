@@ -34,7 +34,7 @@ class QuantityOfItem extends StatelessWidget {
                 : () {
                     FirestoreCart().decrementItem(
                         widget.idCart, widget.item.quantity, context);
-                    if (widget.item.isSelected) {
+                    if (widget.item.isSelected!) {
                       provider.decrementTotal(widget.item.price);
                     }
                   },
@@ -78,7 +78,7 @@ class QuantityOfItem extends StatelessWidget {
               FirestoreCart()
                   .incrementItem(widget.idCart, widget.item.quantity, context);
 
-              if (widget.item.isSelected) {
+              if (widget.item.isSelected!) {
                 provider.incrementTotal(widget.item.price);
               }
             },

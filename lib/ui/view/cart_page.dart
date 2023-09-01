@@ -18,8 +18,6 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
-  List<String> Ids = List.empty(growable: true);
-
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -59,6 +57,8 @@ class _CartPageState extends State<CartPage> {
                     if (snapshot.connectionState == ConnectionState.active) {
                       List<CartData>? cartList;
                       cartList = FirestoreCart().getCarts(snapshot.data?.docs);
+                      List<String>? Ids =
+                          FirestoreCart().getIds(snapshot.data?.docs);
                       if (cartList!.isEmpty) {
                         return Center(
                           child: Image.asset('assets/images/empty-cart.png'),
@@ -70,19 +70,16 @@ class _CartPageState extends State<CartPage> {
                               child: ListView.builder(
                                 itemCount: cartList.length,
                                 itemBuilder: (context, index) {
-                                  String id = snapshot.data!.docs[index].id;
-                                  Ids.add(id);
                                   //set all checked
                                   final alow = cartList!
-                                      .every((element) => element.isSelected);
+                                      .every((element) => element.isSelected!);
                                   Provider.of<CartNotifier>(context,
                                           listen: false)
                                       .isAllChecked = alow;
                                   // CartData item = ;
                                   return ItemOfCart(
                                     item: cartList[index],
-                                    idCart: id,
-                                   
+                                    idCart: Ids![index],
                                   );
                                 },
                               ),
@@ -101,7 +98,7 @@ class _CartPageState extends State<CartPage> {
                                   )
                                 ],
                               ),
-                              child: PayCartBar(Ids: Ids, cartList: cartList),
+                              child: PayCartBar(Ids: Ids!, cartList: cartList),
                             ),
                           ],
                         );

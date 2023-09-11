@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sneaker_app/models/order_data.dart';
-import 'package:sneaker_app/service/firestore_service/firestore_user/firestore_order.dart';
+import 'package:sneaker_app/service/firestore_service/firestore_order.dart';
 import 'package:sneaker_app/service/firestore_service/firestore_user/firestore_user.dart';
 import 'package:sneaker_app/ui/widget/text_style.dart';
 

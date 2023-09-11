@@ -19,15 +19,25 @@ class FirestoreOrder {
     return orders;
   }
 
-  List<OrderData>? getIdOrderList(
+  List<String>? getIdOrderList(
       List<QueryDocumentSnapshot<Map<String, dynamic>>>? docs) {
-    List<OrderData>? orders;
-    orders = docs
-        ?.map((documentSnapshot) => OrderData.fromJson(documentSnapshot.data()))
-        .toList();
-    orders!.sort(
-      (a, b) => b.createdAt!.compareTo(a.createdAt!),
-    );
+    List<String>? orders;
+    orders =
+        docs?.map((documentSnapshot) => documentSnapshot.reference.id).toList();
+
     return orders;
+  }
+
+  Future updateOrder(String id, BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+    _order.doc(id).update({'status': true});
+    Navigator.pop(context);
   }
 }

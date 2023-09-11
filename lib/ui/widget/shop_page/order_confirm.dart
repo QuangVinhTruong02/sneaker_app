@@ -3,12 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sneaker_app/models/order_data.dart';
 
-import '../../../service/firestore_service/firestore_user/firestore_order.dart';
+import '../../../service/firestore_service/firestore_order.dart';
 import '../text_style.dart';
 
-class OrderConfim extends StatelessWidget {
+class OrderConfirm extends StatelessWidget {
   final String shopName;
-  const OrderConfim({super.key, required this.shopName});
+  const OrderConfirm({super.key, required this.shopName});
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +20,13 @@ class OrderConfim extends StatelessWidget {
         stream: FirebaseFirestore.instance
             .collection("orders")
             .where("shopName", isEqualTo: shopName)
+            .where("status", isEqualTo: false)
             .orderBy('createdAt', descending: true)
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             orderList = FirestoreOrder().getListOrder(snapshot.data?.docs);
-            // Ids = FirestoreOrder()
+            Ids = FirestoreOrder().getIdOrderList(snapshot.data?.docs);
             if (orderList!.length > 0) {
               return ListView.builder(
                 itemCount: orderList!.length,
@@ -65,12 +66,15 @@ class OrderConfim extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  "Khách hàng: ${orderData.nameUser}",
-                                  style: textStyleApp(
-                                    FontWeight.bold,
-                                    Colors.black,
-                                    16,
+                                FittedBox(
+                                  fit: BoxFit.cover,
+                                  child: Text(
+                                    "Khách hàng: ${orderData.nameUser}",
+                                    style: textStyleApp(
+                                      FontWeight.bold,
+                                      Colors.black,
+                                      16,
+                                    ),
                                   ),
                                 ),
                                 SizedBox(height: 5),
@@ -132,14 +136,27 @@ class OrderConfim extends StatelessWidget {
                                   alignment: Alignment.centerRight,
                                   child: ElevatedButton(
                                     style: ButtonStyle(
-                                      shape: MaterialStateProperty.all(
-                                        RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(Radius.circular(16),),
-                                        )
-                                      )
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Colors.black),
+                                        shape: MaterialStateProperty.all(
+                                            RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(16),
+                                          ),
+                                        ))),
+                                    onPressed: () {
+                                      FirestoreOrder()
+                                          .updateOrder(Ids![index], context);
+                                    },
+                                    child: Text(
+                                      "Xác nhận",
+                                      style: textStyleApp(
+                                        FontWeight.bold,
+                                        Colors.white,
+                                        14,
+                                      ),
                                     ),
-                                    onPressed: () {},
-                                    child: Text("Xác nhận"),
                                   ),
                                 ),
                               ],

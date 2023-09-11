@@ -18,7 +18,6 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   List<Widget> pageList = [
     const HomePage(),
-    //const SearchPage(),
     const CartPage(),
     const ProfilePage(),
   ];
@@ -26,17 +25,20 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     FirestoreUser().getCurrentUser();
-   
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp)  {
       Provider.of<MainScreenNotifier>(context, listen: false).position = 0;
+     
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Consumer<MainScreenNotifier>(
       builder: (context, mainScreenNotifier, child) {
+        
         return Scaffold(
           resizeToAvoidBottomInset: true,
           // backgroundColor: Colors.black,

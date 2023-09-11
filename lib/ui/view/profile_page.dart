@@ -83,7 +83,7 @@ class ProfilePage extends StatelessWidget {
                                     MaterialStatePropertyAll(Colors.black),
                               ),
                               child: Text(
-                                "Edit Profile",
+                                "Chỉnh sửa hồ sơ",
                                 style: textStyleApp(
                                   FontWeight.normal,
                                   Colors.white,

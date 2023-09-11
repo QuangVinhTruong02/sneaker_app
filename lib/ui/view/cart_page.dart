@@ -40,7 +40,7 @@ class _CartPageState extends State<CartPage> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(8, 20, 8, 10),
                 child: Text(
-                  'My Cart',
+                  'Giỏ của tôi',
                   style: textStyleApp(FontWeight.bold, Colors.white, 42),
                 ),
               ),
@@ -59,6 +59,7 @@ class _CartPageState extends State<CartPage> {
                       cartList = FirestoreCart().getCarts(snapshot.data?.docs);
                       List<String>? Ids =
                           FirestoreCart().getIds(snapshot.data?.docs);
+
                       if (cartList!.isEmpty) {
                         return Center(
                           child: Image.asset('assets/images/empty-cart.png'),

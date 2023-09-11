@@ -13,6 +13,7 @@ class FirestoreUser {
   //get item
   Future getCurrentUser() async {
     email = FirebaseAuth.instance.currentUser!.email.toString();
+ 
     await _users.where("email", isEqualTo: email).get().then(
           (snapshot) => snapshot.docs.forEach(
             (document) {
@@ -26,12 +27,22 @@ class FirestoreUser {
                     " " +
                     value.data()!["lastName"];
               });
-              // "${document.data()["firstName"] + [
-              //       " "
-              //     ] + document.data()["lastName"]}";
             },
           ),
         );
+  }
+
+  Future<int> initLenghCart() async {
+    int lengh = 0;
+    await _users
+        .doc(FirestoreUser.idUser)
+        .collection("cart")
+        .get()
+        .then((querySnapshot) {
+      lengh = querySnapshot.docs.length;
+    });
+
+    return lengh;
   }
 
   Future updateDetailUser(UserData user, BuildContext context) async {

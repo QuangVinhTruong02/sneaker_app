@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../service/auth_service.dart';
+
 import '../text_style.dart';
 
 class ButtonSignUp extends StatelessWidget {
@@ -31,7 +32,7 @@ class ButtonSignUp extends StatelessWidget {
           ),
           backgroundColor: MaterialStateProperty.all(Colors.blueAccent),
         ),
-        onPressed: () {
+        onPressed: () async {
           Provider.of<AuthService>(context, listen: false).SignIn(
             context,
             _emailController.text.trim(),

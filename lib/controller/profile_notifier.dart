@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class ProfileNotifier {
   final Map<int, String> _map = {
-    1: "Start selling",
-    2: "Purchase history",
-    3: "Log out"
+    1: "Nhà cung cấp",
+    2: "Lịch sử mua hàng",
+    3: "Đăng xuất"
   };
   String getPosition(int newValue) {
     String? position;

@@ -19,6 +19,7 @@ class ItemOfBottom extends StatelessWidget {
         width: 60,
         height: 60,
         child: Icon(
+          size: 25,
           icon,
           color: color,
         ),

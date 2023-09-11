@@ -15,7 +15,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {});
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // FirestoreUser().initLenghCart(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.grey.shade200,
@@ -31,7 +38,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Discover',
+                      'Khám phá',
                       style: textStyleApp(FontWeight.bold, Colors.white, 42),
                     ),
                     IconButton(
@@ -64,7 +71,7 @@ class _HomePageState extends State<HomePage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            'Hot sales',
+                            'Bán chạy',
                             style:
                                 textStyleApp(FontWeight.w500, Colors.white, 30),
                           ),
@@ -83,7 +90,7 @@ class _HomePageState extends State<HomePage> {
                     Padding(
                       padding: const EdgeInsets.only(left: 15),
                       child: Text(
-                        'Suggestions',
+                        'Đề xuất',
                         style: textStyleApp(FontWeight.w500, Colors.black, 18),
                       ),
                     ),

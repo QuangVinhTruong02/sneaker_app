@@ -8,7 +8,6 @@ import 'package:sneaker_app/models/shop_information.dart';
 import 'package:sneaker_app/models/user_data.dart';
 import 'package:sneaker_app/service/firestore_service/firestore_shop.dart';
 import 'package:sneaker_app/service/firestore_service/firestore_user/firestore_user.dart';
-import 'package:sneaker_app/ui/view/shop_page.dart';
 import 'package:sneaker_app/ui/widget/star_selling/shop_logo.dart';
 import 'package:sneaker_app/ui/widget/text_style.dart';
 

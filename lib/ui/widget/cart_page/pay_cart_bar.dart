@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sneaker_app/models/order_data.dart';
-import 'package:sneaker_app/service/firestore_service/firestore_user/firestore_order.dart';
+import 'package:sneaker_app/service/firestore_service/firestore_order.dart';
 import 'package:sneaker_app/service/firestore_service/firestore_user/firestore_user.dart';
 import 'package:sneaker_app/ui/view/purchase_history.dart';
 

@@ -163,7 +163,7 @@ class _ShopPageState extends State<ShopPage> with TickerProviderStateMixin {
                                         controller: _tabController,
                                         children: [
                                           MyProduct(shopName: shop.shopName),
-                                          OrderConfim(shopName: shop.shopName),
+                                          OrderConfirm(shopName: shop.shopName),
                                         ],
                                       ),
                                     ),

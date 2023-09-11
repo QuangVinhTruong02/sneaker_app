@@ -14,6 +14,9 @@ class AuthService {
       password: password,
     )
         .then((value) {
+      // await FirestoreUser().getCurrentUser();
+      // Provider.of<MainScreenNotifier>(context, listen: false).lenghListOfCart =
+      //     await FirestoreUser().initLenghCart();
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Đăng nhập thành công')));
     }).onError((error, stackTrace) {

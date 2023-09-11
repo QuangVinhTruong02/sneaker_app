@@ -32,15 +32,6 @@ class BottomNavigation extends StatelessWidget {
                       ? Colors.white
                       : Colors.grey,
                 ),
-                // ItemOfBottom(
-                //   onTap: () {
-                //     mainScreenNotifier.position = 1;
-                //   },
-                //   icon: Icons.favorite_outline,
-                //   color: mainScreenNotifier.position == 1
-                //       ? Colors.white
-                //       : Colors.grey,
-                // ),
                 ItemOfBottom(
                   onTap: () {
                     mainScreenNotifier.position = 1;

@@ -54,6 +54,9 @@ class _ValidFormWidgetState extends State<ValidFormWidget> {
               errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
                   borderSide: const BorderSide(color: Colors.black)),
+              focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: const BorderSide(color: Colors.black)),
               hintText: widget.nameText,
               focusColor: Colors.black,
               errorText: snapshot.hasError ? snapshot.error.toString() : null,

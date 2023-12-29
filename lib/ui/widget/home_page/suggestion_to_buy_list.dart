@@ -23,15 +23,16 @@ class SuggestionToBuyList extends StatelessWidget {
             shrinkWrap: true,
             physics: const ScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              childAspectRatio: 1.9 / 2,
+              childAspectRatio: 1.9 / 2.2,
               crossAxisCount: 2,
             ),
             itemCount: products?.length,
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: () async{
-                   ProductData product;
-                    product = await FirestoreProduct().getProduct(snapshot.data!.docs[index].id);
+                onTap: () async {
+                  ProductData product;
+                  product = await FirestoreProduct()
+                      .getProduct(snapshot.data!.docs[index].id);
                   Navigator.push(
                     context,
                     MaterialPageRoute(

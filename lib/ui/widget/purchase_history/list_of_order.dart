@@ -24,7 +24,8 @@ class _ListOfOrderState extends State<ListOfOrder> {
         stream: FirebaseFirestore.instance
             .collection("orders")
             .where("emailUser", isEqualTo: FirestoreUser.email)
-            .where("status", isEqualTo: widget.status).orderBy("createdAt", descending: true)
+            .where("status", isEqualTo: widget.status)
+            .orderBy("createdAt", descending: true)
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
@@ -111,16 +112,27 @@ class _ListOfOrderState extends State<ListOfOrder> {
                                   ],
                                 ),
                                 const SizedBox(height: 5),
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Text(
-                                    "Thành tiền: ${formaCurrencyText(orderData.quantity * orderData.price)}",
-                                    style: textStyleApp(
-                                      FontWeight.w500,
-                                      Colors.black,
-                                      18,
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Thành tiền: ",
+                                      style: textStyleApp(
+                                        FontWeight.w500,
+                                        Colors.black,
+                                        18,
+                                      ),
                                     ),
-                                  ),
+                                    Text(
+                                      "${formaCurrencyText(orderData.quantity * orderData.price)}",
+                                      style: textStyleApp(
+                                        FontWeight.w500,
+                                        Colors.black,
+                                        18,
+                                      ),
+                                    )
+                                  ],
                                 )
                               ],
                             ),
